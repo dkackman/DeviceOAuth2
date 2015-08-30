@@ -1,10 +1,17 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Reflection;
+using System.Collections.Generic;
+using System.Linq;
 
 using DeviceOAuth2;
 
 using DynamicRestProxy.PortableHttpClient;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace DeviceAuthConsole
 {
@@ -22,7 +29,7 @@ namespace DeviceAuthConsole
         private static async Task Go()
         {
             var keys = GetAppCredentials("Facebook");
-            IDeviceOAuth2 auth = new DeviceOAuth(EndPointInfo.Facebook, keys.Item1, keys.Item2, keys.Item3);
+            IDeviceOAuth2 auth = new DeviceOAuth(EndPointInfo.Facebook, (string)keys.scopes, (string)keys.client_id, (string)keys.client_secret);
 
             auth.WaitingForConfirmation += (o, e) =>
             {
@@ -99,10 +106,18 @@ namespace DeviceAuthConsole
             }
         }
 
-        static Tuple<string, string, string> GetAppCredentials(string name)
+        static dynamic GetAppCredentials(string name)
         {
-            return null;
+            using (var reader = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("DeviceAuthConsole.keys.json")))
+            {
+                var s = reader.ReadToEnd();
+
+                var settings = new JsonSerializerSettings();
+                settings.Converters.Add(new ExpandoObjectConverter());
+
+                var keys = JsonConvert.DeserializeObject<List<dynamic>>(s, settings);
+                return keys.First(d => d.name == name);
+            }
         }
     }
 }
-
