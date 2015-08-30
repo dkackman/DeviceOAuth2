@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DeviceOAuth2</id>
+    <version>1.0.0</version>
+    <title>DeviceOAuth2</title>
+    <authors>dkackman</authors>
+    <owners></owners>
+    <description>
+      OAuth flow for scenarios with limited access to input devices or web browsers, like console apps, or IoT devices.
+    </description>
+    <releaseNotes>
+1.0.0
+  - initial release
+    </releaseNotes>
+    <summary>
+    </summary>
+    <language>en-US</language>
+    <projectUrl>https://nuget.org/packages/DeviceOAuth2.NuGet</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/dkackman/DynamicRestProxy/master/nugeticon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <copyright>Copyright  2015</copyright>
+    <dependencies>
+        <group targetFramework="portable-net45+netcore45+wpa81+wp8">
+          <dependency id="DynamicRestClient" version="2.4.5" />
+          <dependency id="Newtonsoft.Json" version="7.0.1" />
+          <dependency id="Microsoft.Net.Http" version="2.2.28" />
+          <dependency id="Microsoft.Bcl" version="1.1.9" />
+          <dependency id="Microsoft.Bcl.Build" version="1.0.21" />
+        </group>
+    </dependencies>
+    <references></references>
+    <tags>OAuth2 IoT portable PCL UWP</tags>
+  </metadata>
+  <files>
+    <file src="..\..\DeviceOAuth2\bin\Release\DeviceOAuth2.dll" target="lib\portable-net45+netcore45+wpa81+wp8" />
+    <file src="..\..\DeviceOAuth2\bin\Release\DeviceOAuth2.xml" target="lib\portable-net45+netcore45+wpa81+wp8" />
+  </files>
+</package>
