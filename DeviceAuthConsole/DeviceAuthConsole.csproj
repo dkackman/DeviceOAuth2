@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EmbeddedResource Include="keys.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
