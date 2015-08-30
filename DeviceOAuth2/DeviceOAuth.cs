@@ -40,7 +40,10 @@ namespace DeviceOAuth2
         /// <param name="clientSecret"></param>
         public DeviceOAuth(EndPointInfo authEndPoint, string scope, string clientId, string clientSecret)
         {
-            Debug.Assert(!string.IsNullOrEmpty(scope));
+            if (authEndPoint == null) throw new ArgumentNullException("authEndPoint");
+            if (string.IsNullOrEmpty(scope)) throw new InvalidOperationException("scope cannot be empty");
+            if (string.IsNullOrEmpty(clientId)) throw new InvalidOperationException("clientId cannot be empty");
+
             _endPoint = authEndPoint;
             _scope = scope;
             _clientId = clientId;
@@ -65,7 +68,6 @@ namespace DeviceOAuth2
         /// <returns>An auth token. If the token paramter is still valid it will be returned</returns>
         public async Task<TokenInfo> Authenticate(TokenInfo token, CancellationToken cancelToken)
         {
-
             // if the stored token is expired refresh it
             if (token != null)
             {
@@ -93,13 +95,14 @@ namespace DeviceOAuth2
                     {
                         Site = _endPoint.Name,
                         RefreshToken = token.RefreshToken,
-                        AccessToken = response["access_token"].ToString(),
+                        AccessToken = (string)response["access_token"],
                         Expiry = DateTime.UtcNow + TimeSpan.FromSeconds((long)response["expires_in"])
                     };
                 }
             }
             else
             {
+                // the token doesn't support refresh so just initiate the new token flow
                 return await GetNewAccessToken(cancelToken);
             }
         }
@@ -119,8 +122,6 @@ namespace DeviceOAuth2
             {
                 // this call gets the device code, verification url and user code
                 var deviceResponse = await authEndPoint(_endPoint.DevicePath).post(cancelToken, client_id: _clientId, scope: _scope, type: "device_code") as IDictionary<string, object>;
-
-                Debug.WriteLine((string)deviceResponse["user_code"]);
 
                 OnAuthenticatePrompt((string)deviceResponse[_endPoint.VerificationAddressName], (string)deviceResponse["user_code"]);
 
@@ -188,6 +189,8 @@ namespace DeviceOAuth2
 
         private void OnAuthenticatePrompt(string url, string code)
         {
+            Debug.WriteLine(code);
+
             var e = AuthenticatePrompt;
             if (e != null)
             {
