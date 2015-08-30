@@ -71,7 +71,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DeviceOAuth2\DeviceOAuth2.csproj">
+    <ProjectReference Include="..\..\DeviceOAuth2\DeviceOAuth2.csproj">
       <Project>{13aa5158-e91a-416b-b021-cf483c578763}</Project>
       <Name>DeviceOAuth2</Name>
     </ProjectReference>

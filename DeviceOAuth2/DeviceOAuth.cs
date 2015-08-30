@@ -10,6 +10,9 @@ using DynamicRestProxy.PortableHttpClient;
 
 namespace DeviceOAuth2
 {
+    /// <summary>
+    /// Implementation of device based OAuth2 flow
+    /// </summary>
     public class DeviceOAuth : IDeviceOAuth2
     {
         /// <summary>
@@ -28,6 +31,13 @@ namespace DeviceOAuth2
         private readonly string _clientId;
         private readonly string _clientSecret;
 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="authEndPoint"></param>
+        /// <param name="scope"></param>
+        /// <param name="clientId"></param>
+        /// <param name="clientSecret"></param>
         public DeviceOAuth(EndPointInfo authEndPoint, string scope, string clientId, string clientSecret)
         {
             Debug.Assert(!string.IsNullOrEmpty(scope));
@@ -37,11 +47,22 @@ namespace DeviceOAuth2
             _clientSecret = clientSecret == "" ? null : clientSecret; // we wnat to change emptry string to null so this gets culled form the paramter list
         }
 
+        /// <summary>
+        /// Starts the authentication flow
+        /// </summary>
+        /// <param name="token">An existing token that can be checked for needing to be refreshed. Pass null if the app has never been authenticated</param>
+        /// <returns>An auth token. If the token paramter is still valid it will be returned</returns>
         public async Task<TokenInfo> Authenticate(TokenInfo token)
         {
             return await Authenticate(token, CancellationToken.None);
         }
 
+        /// <summary>
+        /// Starts the authentication flow
+        /// </summary>
+        /// <param name="token">An existing token that can be checked for needing to be refreshed. Pass null if the app has never been authenticated</param>
+        /// <param name="cancelToken">Cancellation token</param>
+        /// <returns>An auth token. If the token paramter is still valid it will be returned</returns>
         public async Task<TokenInfo> Authenticate(TokenInfo token, CancellationToken cancelToken)
         {
 
@@ -64,7 +85,7 @@ namespace DeviceOAuth2
         {
             if (!string.IsNullOrEmpty(token.RefreshToken))
             {
-                using (dynamic tokenEndPoint = new DynamicRestClient(_endPoint.AuthUrl))
+                using (dynamic tokenEndPoint = new DynamicRestClient(_endPoint.AuthUri))
                 {
                     var response = await tokenEndPoint(_endPoint.TokenPath).post(cancelToken, client_id: _clientId, client_secret: _clientSecret, refresh_token: token.RefreshToken, grant_type: "refresh_token") as IDictionary<string, object>;
 
@@ -94,7 +115,7 @@ namespace DeviceOAuth2
         private async Task<TokenInfo> GetNewAccessToken(CancellationToken cancelToken)
         {
             // create a connection to the oauth endpoint
-            using (dynamic authEndPoint = new DynamicRestClient(_endPoint.AuthUrl))
+            using (dynamic authEndPoint = new DynamicRestClient(_endPoint.AuthUri))
             {
                 // this call gets the device code, verification url and user code
                 var deviceResponse = await authEndPoint(_endPoint.DevicePath).post(cancelToken, client_id: _clientId, scope: _scope, type: "device_code") as IDictionary<string, object>;

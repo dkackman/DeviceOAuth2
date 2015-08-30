@@ -40,7 +40,7 @@ namespace DeviceAuthConsole
             {
                 Console.WriteLine("");
                 Console.WriteLine("Go to this url on any computer:");
-                Console.WriteLine(e.VerificationUrl);
+                Console.WriteLine(e.VerificationUri);
                 Console.WriteLine("And enter this code:");
                 Console.WriteLine(e.UserCode);
                 Console.WriteLine("");

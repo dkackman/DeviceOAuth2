@@ -1,25 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DeviceOAuth2
+﻿namespace DeviceOAuth2
 {
+    /// <summary>
+    /// Properties describing a device Oauth endpoint
+    /// </summary>
     public class EndPointInfo
     {
-        public string AuthUrl { get; private set; }
+        /// <summary>
+        /// The base Uri for the endpoint
+        /// </summary>
+        public string AuthUri { get; set; }
 
-        public string TokenPath { get; private set; }
+        /// <summary>
+        /// The uri path to get a token
+        /// </summary>
+        public string TokenPath { get; set; }
 
-        public string DevicePath { get; private set; }
+        /// <summary>
+        /// The uri path to request a device code
+        /// </summary>
+        public string DevicePath { get; set; }
 
-        public string VerificationAddressName { get; private set; }
+        /// <summary>
+        /// The property name of the token return json that has the verification Uri
+        /// </summary>
+        public string VerificationAddressName { get; set; }
 
-        public string DeviceCodeName { get; private set; }
+        /// <summary>
+        /// The name of the paramter that describes the code
+        /// </summary>
+        public string DeviceCodeName { get; set; }
 
-        public string Name { get; private set; }
+        /// <summary>
+        /// The name of the endpoint
+        /// </summary>
+        public string Name { get; set; }
 
+        /// <summary>
+        /// Description of Google's device auth endpoint
+        /// </summary>
         public static EndPointInfo Google
         {
             get
@@ -27,7 +45,7 @@ namespace DeviceOAuth2
                 return new EndPointInfo()
                 {
                     Name = "Google",
-                    AuthUrl = "https://accounts.google.com/o/oauth2/",
+                    AuthUri = "https://accounts.google.com/o/oauth2/",
                     TokenPath = "token/",
                     DevicePath = "device/code/",
                     VerificationAddressName = "verification_url",
@@ -36,6 +54,9 @@ namespace DeviceOAuth2
             }
         }
 
+        /// <summary>
+        /// Description of Facebook's auth endpoint
+        /// </summary>
         public static EndPointInfo Facebook
         {
             get
@@ -43,7 +64,7 @@ namespace DeviceOAuth2
                 return new EndPointInfo()
                 {
                     Name = "Facebook",
-                    AuthUrl = "https://graph.facebook.com/oauth/",
+                    AuthUri = "https://graph.facebook.com/oauth/",
                     TokenPath = "device/",
                     DevicePath = "device/",
                     VerificationAddressName = "verification_uri",
