@@ -10,7 +10,7 @@ OAuth flow for scenarios with limited access to input devices or web browsers, l
     auth.AuthenticatePrompt += (o, e) =>
     {
         Console.WriteLine("Go to this url on any computer:");
-        Console.WriteLine(e.VerificationUrl);
+        Console.WriteLine(e.VerificationUri);
         Console.WriteLine("And enter this code:");
         Console.WriteLine(e.UserCode);
     };
