@@ -1,6 +1,8 @@
 # DeviceOAuth2
 Limited input device OAuth 2 flow for .NET
 
+[NuGet Package](https://www.nuget.org/packages/DeviceOAuth2/)
+
 OAuth flow for scenarios with limited access to input devices or web browsers, like console apps, or IoT devices.
 
     IDeviceOAuth2 auth = new DeviceOAuth(EndPointInfo.Facebook, "scope", "client_id", "client_secret");
