@@ -131,20 +131,8 @@ namespace DeviceOAuth2
             }
         }
 
-        /// <summary>
-        /// This authenticates against user and requires user interaction to authorize the unit test to access apis
-        /// This will do the auth, put the auth code on the clipboard and then open a browser with the app auth permission page
-        /// The auth code needs to be sent back to google
-        /// 
-        /// This should only need to be done once because the access token will be stored and refreshed for future test runs
-        /// </summary>
-        /// <returns></returns>
-        private async Task<TokenInfo> GetNewAccessToken(CancellationToken cancelToken)
+        private  async Task<TokenInfo> PollForUserAuth(AuthInfo authInfo, CancellationToken cancelToken)
         {
-            var authInfo = await GetDeviceCode(cancelToken);
-
-            OnAuthenticatePrompt(authInfo);
-
             using (dynamic authEndPoint = new DynamicRestClient(_endPoint.AuthUri))
             {
                 // here poll for success
@@ -186,11 +174,28 @@ namespace DeviceOAuth2
                             }
                         }
                     }
-                    OnWaitingForConfirmation((authInfo.Expiration - DateTimeOffset.UtcNow).Seconds);
+                    OnWaitingForConfirmation((int)(authInfo.Expiration - DateTimeOffset.UtcNow).TotalSeconds);
                 }
 
                 throw new TimeoutException("Access timeout expired");
             }
+        }
+
+        /// <summary>
+        /// This authenticates against user and requires user interaction to authorize the unit test to access apis
+        /// This will do the auth, put the auth code on the clipboard and then open a browser with the app auth permission page
+        /// The auth code needs to be sent back to google
+        /// 
+        /// This should only need to be done once because the access token will be stored and refreshed for future test runs
+        /// </summary>
+        /// <returns></returns>
+        private async Task<TokenInfo> GetNewAccessToken(CancellationToken cancelToken)
+        {
+            var authInfo = await GetDeviceCode(cancelToken);
+
+            OnAuthenticatePrompt(authInfo);
+
+            return await PollForUserAuth(authInfo, cancelToken);
         }
 
         private void OnWaitingForConfirmation(long secondsLeft)
