@@ -12,59 +12,29 @@ namespace DeviceOAuth2
 {
     static class Extensions
     {
-        public async static Task<T> Deserialize<T>(this HttpResponseMessage response)
+        /// <summary>
+        /// This is to deal with the different ways that facebook and good encode the content of the polling method
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public static string GetErrorMessage(this IDictionary<string,object> d)
         {
-            // if the client asked for a stream or byte array, return without serializing to a different type
-            if (typeof(T) == typeof(Stream))
-            {
-                var stream = await response.Content.ReadAsStreamAsync();
+            Debug.Assert(d.ContainsKey("error"));
 
-                return (T)(object)stream;
+            object o = d["error"];
+            var s = o as string;
+            if (s != null)
+            {
+                return s;
             }
 
-            if (typeof(T) == typeof(byte[]))
+            var expando = o as IDictionary<string,object>;
+            if(expando != null && expando.ContainsKey("message"))
             {
-                var bytes = await response.Content.ReadAsByteArrayAsync();
-                return (T)(object)bytes;
+                return (string)expando["message"];
             }
 
-            var content = await response.Content.ReadAsStringAsync();
-
-            if (!string.IsNullOrEmpty(content))
-            {
-                // return type is string, just return the content
-                if (typeof(T) == typeof(string))
-                {
-                    return (T)(object)content;
-                }
-
-                // if the return type is object return a dynamic object
-                if (typeof(T) == typeof(object))
-                {
-                    return DeserializeToDynamic(content.Trim());
-                }
-
-                // otherwise deserialize to the return type
-                return JsonConvert.DeserializeObject<T>(content);
-            }
-
-            // no content - return default
-            return default(T);
-        }
-
-        public static dynamic DeserializeToDynamic(string content)
-        {
-            Debug.Assert(!string.IsNullOrEmpty(content));
-
-            var settings = new JsonSerializerSettings();
-            settings.Converters.Add(new ExpandoObjectConverter());
-
-            if (content.StartsWith("[")) // when the result is a list we need to tell JSonConvert
-            {
-                return JsonConvert.DeserializeObject<List<dynamic>>(content);
-            }
-
-            return JsonConvert.DeserializeObject<ExpandoObject>(content);
+            return "";
         }
     }
 }

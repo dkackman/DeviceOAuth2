@@ -25,7 +25,7 @@
     <copyright>Copyright  2015</copyright>
     <dependencies>
         <group targetFramework="portable-net45+netcore45+wpa81+wp8">
-          <dependency id="DynamicRestClient" version="2.4.5" />
+          <dependency id="DynamicRestClient" version="2.5.0" />
           <dependency id="Newtonsoft.Json" version="7.0.1" />
           <dependency id="Microsoft.Net.Http" version="2.2.29" />
           <dependency id="Microsoft.Bcl" version="1.1.10" />
@@ -33,7 +33,7 @@
         </group>
     </dependencies>
     <references></references>
-    <tags>OAuth2 IoT portable PCL UWP</tags>
+    <tags>OAuth2 IoT portable PCL UWP device</tags>
   </metadata>
   <files>
     <file src="..\..\DeviceOAuth2\bin\Release\DeviceOAuth2.dll" target="lib\portable-net45+netcore45+wpa81+wp8" />

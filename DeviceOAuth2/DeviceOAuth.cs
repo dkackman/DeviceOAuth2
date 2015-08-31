@@ -8,6 +8,8 @@ using System.Net;
 
 using DynamicRestProxy.PortableHttpClient;
 
+using Newtonsoft.Json;
+
 namespace DeviceOAuth2
 {
     /// <summary>
@@ -107,6 +109,28 @@ namespace DeviceOAuth2
             }
         }
 
+        private async Task<AuthInfo> GetDeviceCode(CancellationToken cancelToken)
+        {
+            using (dynamic authEndPoint = new DynamicRestClient(_endPoint.AuthUri))
+            {
+                // this call gets the device code, verification url and user code
+                var deviceResponse = await authEndPoint(_endPoint.DevicePath).post(cancelToken, client_id: _clientId, scope: _scope, type: "device_code") as IDictionary<string, object>;
+
+                long expiration = (long)deviceResponse["expires_in"];
+                long interval = (long)deviceResponse["interval"];
+
+                return new AuthInfo()
+                {
+                    PollInterval = (int)interval,
+                    Timestamp = DateTimeOffset.UtcNow,
+                    Expiration = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(expiration),
+                    DeviceCode = (string)deviceResponse[_endPoint.DeviceCodeName],
+                    VerificationUri = (string)deviceResponse[_endPoint.VerificationAddressName],
+                    UserCode = (string)deviceResponse["user_code"]
+                };
+            }
+        }
+
         /// <summary>
         /// This authenticates against user and requires user interaction to authorize the unit test to access apis
         /// This will do the auth, put the auth code on the clipboard and then open a browser with the app auth permission page
@@ -117,27 +141,19 @@ namespace DeviceOAuth2
         /// <returns></returns>
         private async Task<TokenInfo> GetNewAccessToken(CancellationToken cancelToken)
         {
-            // create a connection to the oauth endpoint
+            var authInfo = await GetDeviceCode(cancelToken);
+
+            OnAuthenticatePrompt(authInfo);
+
             using (dynamic authEndPoint = new DynamicRestClient(_endPoint.AuthUri))
             {
-                // this call gets the device code, verification url and user code
-                var deviceResponse = await authEndPoint(_endPoint.DevicePath).post(cancelToken, client_id: _clientId, scope: _scope, type: "device_code") as IDictionary<string, object>;
-
-                OnAuthenticatePrompt((string)deviceResponse[_endPoint.VerificationAddressName], (string)deviceResponse["user_code"]);
-
-                long expiration = (long)deviceResponse["expires_in"];
-                long interval = (long)deviceResponse["interval"];
-                long time = interval;
-
-                string deviceCode = (string)deviceResponse[_endPoint.DeviceCodeName];
-
                 // here poll for success
-                while (time < expiration)
+                while (DateTimeOffset.UtcNow < authInfo.Expiration)
                 {
-                    await Task.Delay((int)interval * 1000);
+                    await Task.Delay(authInfo.PollInterval * 1000);
 
                     // check the oauth token endpoint ot see if access has been authorized yet
-                    using (HttpResponseMessage message = await authEndPoint(_endPoint.TokenPath).post(typeof(HttpResponseMessage), cancelToken, client_id: _clientId, client_secret: _clientSecret, code: deviceCode, type: "device_token", grant_type: "http://oauth.net/grant_type/device/1.0"))
+                    using (HttpResponseMessage message = await authEndPoint(_endPoint.TokenPath).post(typeof(HttpResponseMessage), cancelToken, client_id: _clientId, client_secret: _clientSecret, code: authInfo.DeviceCode, type: "device_token", grant_type: "http://oauth.net/grant_type/device/1.0"))
                     {
                         // for some reason facebook returns 400 bad request while waiting for authorization from the user
                         if (message.StatusCode != HttpStatusCode.BadRequest)
@@ -145,7 +161,7 @@ namespace DeviceOAuth2
                             message.EnsureSuccessStatusCode();
                         }
 
-                        var tokenResponse = await message.Deserialize<dynamic>() as IDictionary<string, object>;
+                        var tokenResponse = await message.Deserialize<dynamic>(new JsonSerializerSettings()) as IDictionary<string, object>;
 
                         if (tokenResponse.ContainsKey("access_token"))
                         {
@@ -159,7 +175,7 @@ namespace DeviceOAuth2
                         }
                         else if (tokenResponse.ContainsKey("error"))
                         {
-                            var msg = tokenResponse["error"].ToString();
+                            var msg = tokenResponse.GetErrorMessage();
                             if (msg.Contains("denied") || msg.Contains("declined"))
                             {
                                 throw new UnauthorizedAccessException("The user denied access");
@@ -170,8 +186,7 @@ namespace DeviceOAuth2
                             }
                         }
                     }
-                    time += interval;
-                    OnWaitingForConfirmation(expiration - time);
+                    OnWaitingForConfirmation((authInfo.Expiration - DateTimeOffset.UtcNow).Seconds);
                 }
 
                 throw new TimeoutException("Access timeout expired");
@@ -187,14 +202,14 @@ namespace DeviceOAuth2
             }
         }
 
-        private void OnAuthenticatePrompt(string url, string code)
+        private void OnAuthenticatePrompt(AuthInfo info)
         {
-            Debug.WriteLine(code);
+            Debug.WriteLine(info.UserCode);
 
             var e = AuthenticatePrompt;
             if (e != null)
             {
-                e.BeginInvoke(this, new AuthInfo(url, code), null, null);
+                e.BeginInvoke(this, info, null, null);
             }
         }
     }
