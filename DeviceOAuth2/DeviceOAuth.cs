@@ -15,7 +15,7 @@ namespace DeviceOAuth2
     /// <summary>
     /// Implementation of device based OAuth2 flow
     /// </summary>
-    public class DeviceOAuth : IDeviceOAuth2
+    public class DeviceOAuth : IDeviceOAuth2, IDeviceOAuth2Stepwise
     {
         /// <summary>
         /// Event raised when the auth confirmation url and code are known
@@ -109,6 +109,23 @@ namespace DeviceOAuth2
             }
         }
 
+        /// <summary>
+        /// This authenticates against user and requires user interaction to authorize the unit test to access apis
+        /// This will do the auth, put the auth code on the clipboard and then open a browser with the app auth permission page
+        /// The auth code needs to be sent back to google
+        /// 
+        /// This should only need to be done once because the access token will be stored and refreshed for future test runs
+        /// </summary>
+        /// <returns></returns>
+        private async Task<TokenInfo> GetNewAccessToken(CancellationToken cancelToken)
+        {
+            var authInfo = await GetDeviceCode(cancelToken);
+
+            OnAuthenticatePrompt(authInfo);
+
+            return await PollForUserAuth(authInfo, cancelToken);
+        }
+
         private async Task<AuthInfo> GetDeviceCode(CancellationToken cancelToken)
         {
             using (dynamic authEndPoint = new DynamicRestClient(_endPoint.AuthUri))
@@ -133,6 +150,8 @@ namespace DeviceOAuth2
 
         private  async Task<TokenInfo> PollForUserAuth(AuthInfo authInfo, CancellationToken cancelToken)
         {
+            if (authInfo == null) throw new ArgumentNullException("authInfo");
+
             using (dynamic authEndPoint = new DynamicRestClient(_endPoint.AuthUri))
             {
                 // here poll for success
@@ -163,6 +182,8 @@ namespace DeviceOAuth2
                         }
 
                         tokenResponse.ThrowIfError();
+
+                        // if we made it this far it inidcates that the rest endpoint is still in a pending state, so go around again
                     }
 
                     OnWaitingForConfirmation((int)(authInfo.Expiration - DateTimeOffset.UtcNow).TotalSeconds);
@@ -170,23 +191,6 @@ namespace DeviceOAuth2
 
                 throw new TimeoutException("Access timeout expired");
             }
-        }
-
-        /// <summary>
-        /// This authenticates against user and requires user interaction to authorize the unit test to access apis
-        /// This will do the auth, put the auth code on the clipboard and then open a browser with the app auth permission page
-        /// The auth code needs to be sent back to google
-        /// 
-        /// This should only need to be done once because the access token will be stored and refreshed for future test runs
-        /// </summary>
-        /// <returns></returns>
-        private async Task<TokenInfo> GetNewAccessToken(CancellationToken cancelToken)
-        {
-            var authInfo = await GetDeviceCode(cancelToken);
-
-            OnAuthenticatePrompt(authInfo);
-
-            return await PollForUserAuth(authInfo, cancelToken);
         }
 
         private void OnWaitingForConfirmation(long secondsLeft)
@@ -207,6 +211,24 @@ namespace DeviceOAuth2
             {
                 e.BeginInvoke(this, info, null, null);
             }
+        }
+
+        async Task<AuthInfo> IDeviceOAuth2Stepwise.BeginAuth()
+        {
+            return await GetDeviceCode(CancellationToken.None);
+        }
+        async Task<AuthInfo> IDeviceOAuth2Stepwise.BeginAuth(CancellationToken cancelToken)
+        {
+            return await GetDeviceCode(cancelToken);
+        }
+
+        async Task<TokenInfo> IDeviceOAuth2Stepwise.CheckAuth(AuthInfo info)
+        {
+            return await PollForUserAuth(info, CancellationToken.None);
+        }
+        async Task<TokenInfo> IDeviceOAuth2Stepwise.CheckAuth(AuthInfo info, CancellationToken cancelToken)
+        {
+            return await PollForUserAuth(info, cancelToken);
         }
     }
 }
