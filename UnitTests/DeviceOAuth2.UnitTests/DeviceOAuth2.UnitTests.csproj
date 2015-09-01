@@ -91,6 +91,9 @@
       <Name>DeviceOAuth2</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="ReadMe.txt" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
