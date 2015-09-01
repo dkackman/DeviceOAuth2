@@ -161,19 +161,10 @@ namespace DeviceOAuth2
                                 Expiry = tokenResponse.ContainsKey("expires_in") ? DateTime.UtcNow + TimeSpan.FromSeconds((long)tokenResponse["expires_in"]) : DateTime.MaxValue
                             };
                         }
-                        else if (tokenResponse.ContainsKey("error"))
-                        {
-                            var msg = tokenResponse.GetErrorMessage();
-                            if (msg.Contains("denied") || msg.Contains("declined"))
-                            {
-                                throw new UnauthorizedAccessException("The user denied access");
-                            }
-                            else if (!msg.Contains("pending"))
-                            {
-                                throw new InvalidOperationException(msg);
-                            }
-                        }
+
+                        tokenResponse.ThrowIfError();
                     }
+
                     OnWaitingForConfirmation((int)(authInfo.Expiration - DateTimeOffset.UtcNow).TotalSeconds);
                 }
 
