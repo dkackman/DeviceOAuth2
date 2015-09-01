@@ -20,7 +20,7 @@
     <summary>
     </summary>
     <language>en-US</language>
-    <projectUrl>https://nuget.org/packages/DeviceOAuth2.NuGet</projectUrl>
+    <projectUrl>https://github.com/dkackman/DeviceOAuth2</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/dkackman/DynamicRestProxy/master/nugeticon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
