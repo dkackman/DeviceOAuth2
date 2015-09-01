@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DeviceOAuth2</id>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <title>DeviceOAuth2</title>
     <authors>dkackman</authors>
     <owners></owners>
@@ -14,6 +14,8 @@
   - initial release
 1.0.1
   - upgrade BCL dependency versions
+1.1.0
+  - add alternative workflow that doesn't rely on callback events (IDeviceOAuth2Stepwise)
     </releaseNotes>
     <summary>
     </summary>
@@ -22,7 +24,7 @@
     <iconUrl>https://raw.githubusercontent.com/dkackman/DynamicRestProxy/master/nugeticon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
-    <copyright>Copyright  2015</copyright>
+    <copyright>Copyright Don Kackman 2015</copyright>
     <dependencies>
         <group targetFramework="portable-net45+netcore45+wpa81+wp8">
           <dependency id="DynamicRestClient" version="2.5.0" />
@@ -33,7 +35,7 @@
         </group>
     </dependencies>
     <references></references>
-    <tags>OAuth2 IoT portable PCL UWP device</tags>
+    <tags>OAuth2 IoT portable PCL UWP device console</tags>
   </metadata>
   <files>
     <file src="..\..\DeviceOAuth2\bin\Release\DeviceOAuth2.dll" target="lib\portable-net45+netcore45+wpa81+wp8" />

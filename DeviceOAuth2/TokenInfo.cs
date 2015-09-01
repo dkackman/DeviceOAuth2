@@ -18,7 +18,7 @@ namespace DeviceOAuth2
         public string RefreshToken { get; set; }
 
         /// <summary>
-        /// The Expiration time of the access token. Will be DateTime.MaxValue if refresh is unknown or unsupported
+        /// The Expiration time of the access token. Will be DateTime.MaxValue if refresh is unknown or unsupported by teh endpoint
         /// </summary>
         public DateTime Expiry { get; set; } = DateTime.MinValue;
 

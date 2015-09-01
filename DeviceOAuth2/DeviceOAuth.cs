@@ -213,20 +213,20 @@ namespace DeviceOAuth2
             }
         }
 
-        async Task<AuthInfo> IDeviceOAuth2Stepwise.BeginAuth()
+        async Task<AuthInfo> IDeviceOAuth2Stepwise.StartAuthentication()
         {
             return await GetDeviceCode(CancellationToken.None);
         }
-        async Task<AuthInfo> IDeviceOAuth2Stepwise.BeginAuth(CancellationToken cancelToken)
+        async Task<AuthInfo> IDeviceOAuth2Stepwise.StartAuthentication(CancellationToken cancelToken)
         {
             return await GetDeviceCode(cancelToken);
         }
 
-        async Task<TokenInfo> IDeviceOAuth2Stepwise.CheckAuth(AuthInfo info)
+        async Task<TokenInfo> IDeviceOAuth2Stepwise.WaitForUserConsent(AuthInfo info)
         {
             return await PollForUserAuth(info, CancellationToken.None);
         }
-        async Task<TokenInfo> IDeviceOAuth2Stepwise.CheckAuth(AuthInfo info, CancellationToken cancelToken)
+        async Task<TokenInfo> IDeviceOAuth2Stepwise.WaitForUserConsent(AuthInfo info, CancellationToken cancelToken)
         {
             return await PollForUserAuth(info, cancelToken);
         }

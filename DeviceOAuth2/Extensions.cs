@@ -1,13 +1,6 @@
 ﻿using System;
-using System.IO;
-using System.Net.Http;
-using System.Dynamic;
 using System.Diagnostics;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace DeviceOAuth2
 {
