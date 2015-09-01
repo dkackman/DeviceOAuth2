@@ -27,10 +27,13 @@ namespace DeviceOAuth2.UnitTests
 
         public static void SpawnBrowser(string verificationUri, string userCode)
         {
-            Process p = new Process();
-            p.StartInfo.FileName = "cmd.exe";
-            p.StartInfo.Arguments = string.Format("/c echo {0}| clip", userCode.Trim());
-            p.Start();
+            // this bit puts the user code in the clipboard
+            using (Process p = new Process())
+            {
+                p.StartInfo.FileName = "cmd.exe";
+                p.StartInfo.Arguments = string.Format("/c echo {0}| clip", userCode.Trim());
+                p.Start();
+            }
 
             // this requires user permission - open a broswer - enter the user_code which is now in the clipboard
             Process.Start(verificationUri);
