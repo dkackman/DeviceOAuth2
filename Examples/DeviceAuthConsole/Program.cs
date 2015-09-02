@@ -36,7 +36,7 @@ namespace DeviceAuthConsole
                 Console.CursorLeft = 0;
                 Console.Write(e + " seconds left");
             };
-            auth.AuthenticatePrompt += (o, e) =>
+            auth.PromptUser += (o, e) =>
             {
                 Console.WriteLine("");
                 Console.WriteLine("Go to this url on any computer:");
@@ -50,7 +50,7 @@ namespace DeviceAuthConsole
 
             try
             {
-                var token = await auth.Authenticate(null);
+                var token = await auth.Authorize(null);
 
                 await ShowUserProfile(token);
             }

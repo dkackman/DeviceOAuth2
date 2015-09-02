@@ -12,14 +12,14 @@ namespace DeviceOAuth2.UnitTests
         public async Task FacebookAuth()
         {
             var keys = TestHelpers.GetAppCredentials("Facebook");
-            IDeviceOAuth2 auth = new DeviceOAuth(EndPointInfo.Facebook, (string)keys.scopes, (string)keys.client_id, (string)keys.client_secret);
+            IDeviceOAuth2 auth = new DeviceOAuth(EndPointInfo.Facebook, (string)keys.scopes, (string)keys.client_id);
 
-            auth.AuthenticatePrompt += (o, e) =>
+            auth.PromptUser += (o, e) =>
             {
                 TestHelpers.SpawnBrowser(e.VerificationUri, e.UserCode);
             };
 
-            var token = await auth.Authenticate(null);
+            var token = await auth.Authorize(null);
 
             Assert.IsNotNull(token);
             Assert.IsFalse(string.IsNullOrEmpty(token.AccessToken));
@@ -31,12 +31,12 @@ namespace DeviceOAuth2.UnitTests
             var keys = TestHelpers.GetAppCredentials("Google");
             IDeviceOAuth2 auth = new DeviceOAuth(EndPointInfo.Google, (string)keys.scopes, (string)keys.client_id, (string)keys.client_secret);
 
-            auth.AuthenticatePrompt += (o, e) =>
+            auth.PromptUser += (o, e) =>
             {
                 TestHelpers.SpawnBrowser(e.VerificationUri, e.UserCode);
             };
 
-            var token = await auth.Authenticate(null);
+            var token = await auth.Authorize(null);
 
             Assert.IsNotNull(token);
             Assert.IsFalse(string.IsNullOrEmpty(token.AccessToken));

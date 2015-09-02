@@ -13,7 +13,7 @@ namespace DeviceOAuth2
         /// </summary>
         /// <returns>An <see cref="AuthInfo"/>. The user should be presented the VerificationUri and UserCode as well as instruction. 
         /// This object should then be passed to <see cref="WaitForUserConsent(AuthInfo)"/></returns>
-        Task<AuthInfo> StartAuthentication();
+        Task<AuthInfo> StartAuthorization();
 
         /// <summary>
         /// Begins the authorization workflow by getting a device and user code from the endpoint
@@ -21,7 +21,7 @@ namespace DeviceOAuth2
         /// <param name="cancelToken">A <see cref="CancellationToken"/></param>
         /// <returns>An <see cref="AuthInfo"/>. The user should be presented the VerificationUri and UserCode as well as instruction. 
         /// This object should then be passed to <see cref="WaitForUserConsent(AuthInfo, CancellationToken)"/></returns>
-        Task<AuthInfo> StartAuthentication(CancellationToken cancelToken);
+        Task<AuthInfo> StartAuthorization(CancellationToken cancelToken);
 
         /// <summary>
         /// Polls the oauth endpoint until:
@@ -29,7 +29,7 @@ namespace DeviceOAuth2
         /// 2) The user denies access
         /// 3) The authorization times out (endpoint specific)
         /// </summary>
-        /// <param name="info">The <see cref="AuthInfo"/> returned from <see cref="StartAuthentication()"/></param>
+        /// <param name="info">The <see cref="AuthInfo"/> returned from <see cref="StartAuthorization()"/></param>
         /// <returns>A <see cref="TokenInfo"/> that contains the Access Token</returns>
         Task<TokenInfo> WaitForUserConsent(AuthInfo info);
 
@@ -39,9 +39,12 @@ namespace DeviceOAuth2
         /// 2) The user denies access
         /// 3) The authorization times out (endpoint specific)
         /// </summary>
-        /// <param name="info">The <see cref="AuthInfo"/> returned from <see cref="StartAuthentication(CancellationToken)"/></param>
+        /// <param name="info">The <see cref="AuthInfo"/> returned from <see cref="StartAuthorization(CancellationToken)"/></param>
         /// <param name="cancelToken">A <see cref="CancellationToken"/></param>
         /// <returns>A <see cref="TokenInfo"/> that contains the Access Token</returns>
         Task<TokenInfo> WaitForUserConsent(AuthInfo info, CancellationToken cancelToken);
+
+        Task<TokenInfo> RefreshAccessToken(TokenInfo token);
+        Task<TokenInfo> RefreshAccessToken(TokenInfo token, CancellationToken cancelToken);
     }
 }

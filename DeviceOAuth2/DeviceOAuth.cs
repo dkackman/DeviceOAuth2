@@ -21,7 +21,7 @@ namespace DeviceOAuth2
         /// Event raised when the auth confirmation url and code are known
         /// Display these to the user and tell them to enter the code at the referenced web page
         /// </summary>
-        public event EventHandler<AuthInfo> AuthenticatePrompt;
+        public event EventHandler<AuthInfo> PromptUser;
 
         /// <summary>
         /// Status event raised each time confirmation is checked for
@@ -39,6 +39,17 @@ namespace DeviceOAuth2
         /// <param name="authEndPoint"></param>
         /// <param name="scope"></param>
         /// <param name="clientId"></param>
+        public DeviceOAuth(EndPointInfo authEndPoint, string scope, string clientId)
+            : this(authEndPoint, scope, clientId, null)
+        {
+        }
+
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="authEndPoint"></param>
+        /// <param name="scope"></param>
+        /// <param name="clientId"></param>
         /// <param name="clientSecret"></param>
         public DeviceOAuth(EndPointInfo authEndPoint, string scope, string clientId, string clientSecret)
         {
@@ -49,36 +60,44 @@ namespace DeviceOAuth2
             _endPoint = authEndPoint;
             _scope = scope;
             _clientId = clientId;
-            _clientSecret = clientSecret == "" ? null : clientSecret; // we wnat to change emptry string to null so this gets culled form the paramter list
+            _clientSecret = clientSecret == "" ? null : clientSecret; // we want to change empty string to null so it gets culled form the paramrter list
         }
 
         /// <summary>
-        /// Starts the authentication flow
+        /// Starts the authorization flow
         /// </summary>
-        /// <param name="token">An existing token that can be checked for needing to be refreshed. Pass null if the app has never been authenticated</param>
+        /// <param name="token">An existing token that can be checked for needing to be refreshed. Pass null if the app has never been authorized</param>
         /// <returns>An auth token. If the token paramter is still valid it will be returned</returns>
-        public async Task<TokenInfo> Authenticate(TokenInfo token)
+        public async Task<TokenInfo> Authorize(TokenInfo token)
         {
-            return await Authenticate(token, CancellationToken.None);
+            return await Authorize(token, CancellationToken.None);
         }
 
         /// <summary>
-        /// Starts the authentication flow
+        /// Starts the authorization flow
         /// </summary>
-        /// <param name="token">An existing token that can be checked for needing to be refreshed. Pass null if the app has never been authenticated</param>
+        /// <param name="token">An existing token that can be checked for needing to be refreshed. Pass null if the app has never been authorized</param>
         /// <param name="cancelToken">Cancellation token</param>
-        /// <returns>An auth token. If the token paramter is still valid it will be returned</returns>
-        public async Task<TokenInfo> Authenticate(TokenInfo token, CancellationToken cancelToken)
+        /// <returns>An auth token. If the token parameter is still valid it will be returned</returns>
+        public async Task<TokenInfo> Authorize(TokenInfo token, CancellationToken cancelToken)
         {
-            // if the stored token is expired refresh it
             if (token != null)
             {
+                // if the stored token is expired refresh it
                 if (DateTime.UtcNow >= token.Expiry)
                 {
-                    return await RefreshAccessToken(token, cancelToken);
+                    if (!string.IsNullOrEmpty(token.RefreshToken))
+                    {
+                        return await RefreshAccessToken(token, cancelToken);
+                    }
+                    else
+                    {
+                        // the token doesn't support refresh so just initiate the new token flow
+                        return await GetNewAccessToken(cancelToken);
+                    }
                 }
 
-                return token;
+                return token; // this token is still valid just pass it back
             }
 
             // no stored token - go get a new one
@@ -87,41 +106,28 @@ namespace DeviceOAuth2
 
         private async Task<TokenInfo> RefreshAccessToken(TokenInfo token, CancellationToken cancelToken)
         {
-            if (!string.IsNullOrEmpty(token.RefreshToken))
-            {
-                using (dynamic tokenEndPoint = new DynamicRestClient(_endPoint.AuthUri))
-                {
-                    var response = await tokenEndPoint(_endPoint.TokenPath).post(cancelToken, client_id: _clientId, client_secret: _clientSecret, refresh_token: token.RefreshToken, grant_type: "refresh_token") as IDictionary<string, object>;
+            if (token == null) throw new ArgumentNullException("token");
+            if (string.IsNullOrEmpty(token.RefreshToken)) throw new InvalidOperationException("Token is not refreshable");
 
-                    return new TokenInfo()
-                    {
-                        Site = _endPoint.Name,
-                        RefreshToken = token.RefreshToken,
-                        AccessToken = (string)response["access_token"],
-                        Expiry = DateTime.UtcNow + TimeSpan.FromSeconds((long)response["expires_in"])
-                    };
-                }
-            }
-            else
+            using (dynamic tokenEndPoint = new DynamicRestClient(_endPoint.AuthUri))
             {
-                // the token doesn't support refresh so just initiate the new token flow
-                return await GetNewAccessToken(cancelToken);
+                var response = await tokenEndPoint(_endPoint.TokenPath).post(cancelToken, client_id: _clientId, client_secret: _clientSecret, refresh_token: token.RefreshToken, grant_type: "refresh_token") as IDictionary<string, object>;
+
+                return new TokenInfo()
+                {
+                    Site = _endPoint.Name,
+                    RefreshToken = token.RefreshToken,
+                    AccessToken = (string)response["access_token"],
+                    Expiry = DateTime.UtcNow + TimeSpan.FromSeconds((long)response["expires_in"])
+                };
             }
         }
 
-        /// <summary>
-        /// This authenticates against user and requires user interaction to authorize the unit test to access apis
-        /// This will do the auth, put the auth code on the clipboard and then open a browser with the app auth permission page
-        /// The auth code needs to be sent back to google
-        /// 
-        /// This should only need to be done once because the access token will be stored and refreshed for future test runs
-        /// </summary>
-        /// <returns></returns>
         private async Task<TokenInfo> GetNewAccessToken(CancellationToken cancelToken)
         {
             var authInfo = await GetDeviceCode(cancelToken);
 
-            OnAuthenticatePrompt(authInfo);
+            OnPromptUser(authInfo);
 
             return await PollForUserAuth(authInfo, cancelToken);
         }
@@ -148,7 +154,7 @@ namespace DeviceOAuth2
             }
         }
 
-        private  async Task<TokenInfo> PollForUserAuth(AuthInfo authInfo, CancellationToken cancelToken)
+        private async Task<TokenInfo> PollForUserAuth(AuthInfo authInfo, CancellationToken cancelToken)
         {
             if (authInfo == null) throw new ArgumentNullException("authInfo");
 
@@ -202,22 +208,22 @@ namespace DeviceOAuth2
             }
         }
 
-        private void OnAuthenticatePrompt(AuthInfo info)
+        private void OnPromptUser(AuthInfo info)
         {
             Debug.WriteLine(info.UserCode);
 
-            var e = AuthenticatePrompt;
+            var e = PromptUser;
             if (e != null)
             {
                 e.BeginInvoke(this, info, null, null);
             }
         }
 
-        async Task<AuthInfo> IDeviceOAuth2Stepwise.StartAuthentication()
+        async Task<AuthInfo> IDeviceOAuth2Stepwise.StartAuthorization()
         {
             return await GetDeviceCode(CancellationToken.None);
         }
-        async Task<AuthInfo> IDeviceOAuth2Stepwise.StartAuthentication(CancellationToken cancelToken)
+        async Task<AuthInfo> IDeviceOAuth2Stepwise.StartAuthorization(CancellationToken cancelToken)
         {
             return await GetDeviceCode(cancelToken);
         }
@@ -230,6 +236,14 @@ namespace DeviceOAuth2
         {
             return await PollForUserAuth(info, cancelToken);
         }
+
+        async Task<TokenInfo> IDeviceOAuth2Stepwise.RefreshAccessToken(TokenInfo token)
+        {
+            return await RefreshAccessToken(token, CancellationToken.None);
+        }
+        async Task<TokenInfo> IDeviceOAuth2Stepwise.RefreshAccessToken(TokenInfo token, CancellationToken cancelToken)
+        {
+            return await RefreshAccessToken(token, cancelToken);
+        }
     }
 }
-

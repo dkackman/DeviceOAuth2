@@ -11,9 +11,9 @@ namespace DeviceOAuth2.UnitTests
         public async Task FacebookAuthStepwise()
         {
             var keys = TestHelpers.GetAppCredentials("Facebook");
-            IDeviceOAuth2Stepwise auth = new DeviceOAuth(EndPointInfo.Facebook, (string)keys.scopes, (string)keys.client_id, (string)keys.client_secret);
+            IDeviceOAuth2Stepwise auth = new DeviceOAuth(EndPointInfo.Facebook, (string)keys.scopes, (string)keys.client_id);
 
-            var info = await auth.StartAuthentication();
+            var info = await auth.StartAuthorization();
 
             TestHelpers.SpawnBrowser(info.VerificationUri, info.UserCode);
 
@@ -29,7 +29,7 @@ namespace DeviceOAuth2.UnitTests
             var keys = TestHelpers.GetAppCredentials("Google");
             IDeviceOAuth2Stepwise auth = new DeviceOAuth(EndPointInfo.Google, (string)keys.scopes, (string)keys.client_id, (string)keys.client_secret);
 
-            var info = await auth.StartAuthentication();
+            var info = await auth.StartAuthorization();
 
             TestHelpers.SpawnBrowser(info.VerificationUri, info.UserCode);
 

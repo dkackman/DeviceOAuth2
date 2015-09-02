@@ -1,6 +1,11 @@
 ﻿{
   "dependencies": {
-    "DynamicRestClient": "2.4.5",
+    "DynamicRestClient": "2.5.0",
+    "Microsoft.ApplicationInsights": "1.0.0",
+    "Microsoft.ApplicationInsights.PersistenceChannel": "1.0.0",
+    "Microsoft.ApplicationInsights.WindowsApps": "1.0.0",
+    "Microsoft.Bcl": "1.1.10",
+    "Microsoft.Bcl.Build": "1.0.21",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
     "Newtonsoft.Json": "7.0.1"
   },
