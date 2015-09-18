@@ -74,35 +74,29 @@ namespace DeviceAuthConsole
             Console.WriteLine("");
             Debug.Assert(!string.IsNullOrEmpty(token.AccessToken));
 
+            var defaults = new DynamicRestClientDefaults()
+            {
+                AuthScheme = token.Scheme,
+                AuthToken = token.AccessToken
+            };
+
             if (token.Site == "Google")
             {
-                // using a DynamicRestClient for this example - any old rest client would work
-                var defaults = new DynamicRestClientDefaults()
+                using (dynamic client = new DynamicRestClient("https://www.googleapis.com/oauth2/v1/userinfo", defaults))
                 {
-                    AuthScheme = "OAuth",
-                    AuthToken = token.AccessToken
-                };
+                    dynamic v = await client.get();
 
-                dynamic client = new DynamicRestClient("https://www.googleapis.com/oauth2/v1/userinfo", defaults);
-
-                dynamic v = await client.get();
-
-                Console.WriteLine("Name = " + v.name);
+                    Console.WriteLine("Name = " + v.name);
+                }
             }
             else if (token.Site == "Facebook")
             {
-                // using a DynamicRestClient for this example - any old rest client would work
-                var defaults = new DynamicRestClientDefaults()
+                using (dynamic client = new DynamicRestClient("https://graph.facebook.com/v2.3/me", defaults))
                 {
-                    AuthScheme = "Bearer",
-                    AuthToken = token.AccessToken
-                };
+                    dynamic v = await client.get(fields: "name");
 
-                dynamic client = new DynamicRestClient("https://graph.facebook.com/v2.3/me", defaults);
-
-                dynamic v = await client.get(fields: "name");
-
-                Console.WriteLine("Name = " + v.name);
+                    Console.WriteLine("Name = " + v.name);
+                }
             }
         }
 

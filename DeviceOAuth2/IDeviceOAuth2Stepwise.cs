@@ -6,7 +6,7 @@ namespace DeviceOAuth2
     /// <summary>
      /// Interface for device based OAuth2 flow that does not use event callbacks
      /// </summary>
-    public interface IDeviceOAuth2Stepwise
+    public interface IDeviceOAuth2Stepwise : IDeviceOAuthInfo
     {
         /// <summary>
         /// Begins the authorization workflow by getting a device and user code from the endpoint
@@ -44,7 +44,19 @@ namespace DeviceOAuth2
         /// <returns>A <see cref="TokenInfo"/> that contains the Access Token</returns>
         Task<TokenInfo> WaitForUserConsent(AuthInfo info, CancellationToken cancelToken);
 
+        /// <summary>
+        /// Refreshes aan access token if supported
+        /// </summary>
+        /// <param name="token">The token to refresh</param>
+        /// <returns>Refreshed token</returns>
         Task<TokenInfo> RefreshAccessToken(TokenInfo token);
+
+        /// <summary>
+        /// Refreshes aan access token if supported
+        /// </summary>
+        /// <param name="token">The token to refresh</param>
+        /// <param name="cancelToken">A <see cref="CancellationToken"/></param>
+        /// <returns>Refreshed token</returns>
         Task<TokenInfo> RefreshAccessToken(TokenInfo token, CancellationToken cancelToken);
     }
 }

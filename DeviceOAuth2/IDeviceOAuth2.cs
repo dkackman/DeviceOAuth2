@@ -7,7 +7,7 @@ namespace DeviceOAuth2
     /// <summary>
     /// Interface for device based OAuth2 flow
     /// </summary>
-    public interface IDeviceOAuth2
+    public interface IDeviceOAuth2 : IDeviceOAuthInfo
     {
         /// <summary>
         /// Event raised when the auth confirmation url and code are known
@@ -34,5 +34,24 @@ namespace DeviceOAuth2
         /// <param name="cancelToken">Cancellation token</param>
         /// <returns>An auth token. If the token paramter is still valid it will be returned</returns>
         Task<TokenInfo> Authorize(TokenInfo token, CancellationToken cancelToken);
+
+        /// <summary>
+        /// Checks the validity of a token against the auth endpoint.
+        /// It does this by makeing a get request to the token's <see cref="EndPointInfo.CheckUri"/>
+        /// This is useful for ensuring that the user hasn't revoked authorization for a stored token and that it hasn't expired
+        /// </summary>
+        /// <param name="token">The token to check</param>
+        /// <returns></returns>
+        Task<bool> CheckToken(TokenInfo token);
+
+        /// <summary>
+        /// Checks the validity of a token against the auth endpoint.
+        /// It does this by makeing a get request to the token's <see cref="EndPointInfo.CheckUri"/>
+        /// This is useful for ensuring that the user hasn't revoked authorization for a stored token and that it hasn't expired
+        /// </summary>
+        /// <param name="token">The token to check</param>
+        /// <param name="cancelToken">A cancellation token</param>
+        /// <returns></returns>
+        Task<bool> CheckToken(TokenInfo token, CancellationToken cancelToken);
     }
 }

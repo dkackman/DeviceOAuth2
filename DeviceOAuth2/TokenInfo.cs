@@ -26,5 +26,10 @@ namespace DeviceOAuth2
         /// The site that the token is associated with
         /// </summary>
         public string Site { get; set; }
+
+        /// <summary>
+        /// The Auth scheme used by the token
+        /// </summary>
+        public string Scheme { get; set; }
     }
 }

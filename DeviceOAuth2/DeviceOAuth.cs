@@ -64,6 +64,21 @@ namespace DeviceOAuth2
         }
 
         /// <summary>
+        /// The endpoint of the OAuth2 interface
+        /// </summary>
+        public EndPointInfo EndPoint { get { return _endPoint; } }
+
+        /// <summary>
+        /// The scope(s) being authorized
+        /// </summary>
+        public string Scope { get { return _scope; } }
+
+        /// <summary>
+        /// The ClientId requesting authorization
+        /// </summary>
+        public string ClientId { get { return _clientId; } }
+
+        /// <summary>
         /// Starts the authorization flow
         /// </summary>
         /// <param name="token">An existing token that can be checked for needing to be refreshed. Pass null if the app has never been authorized</param>
@@ -104,6 +119,57 @@ namespace DeviceOAuth2
             return await GetNewAccessToken(cancelToken);
         }
 
+
+        /// <summary>
+        /// Checks the validity of a token against the auth endpoint.
+        /// It does this by makeing a get request to the token's <see cref="EndPointInfo.CheckUri"/>
+        /// This is useful for ensuring that the user hasn't revoked authorization for a stored token and that it hasn't expired
+        /// </summary>
+        /// <param name="token">The token to check</param>
+        public async Task<bool> CheckToken(TokenInfo token)
+        {
+            return await CheckToken(token, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Checks the validity of a token against the auth endpoint.
+        /// It does this by makeing a get request to the token's <see cref="EndPointInfo.CheckUri"/>
+        /// This is useful for ensuring that the user hasn't revoked authorization for a stored token and that it hasn't expired
+        /// </summary>
+        /// <param name="token">The token to check</param>
+        /// <param name="cancelToken">A cancellation token</param>
+        /// <returns></returns>
+        public async Task<bool> CheckToken(TokenInfo token, CancellationToken cancelToken)
+        {
+            try
+            {
+                var defaults = new DynamicRestClientDefaults()
+                {
+                    AuthScheme = EndPoint.Scheme,
+                    AuthToken = token.AccessToken
+                };
+
+                using (dynamic checkEndpoint = new DynamicRestClient(_endPoint.CheckUri, defaults))
+                {
+                    var response = await checkEndpoint.get(cancelToken);
+                    return response != null;
+                }
+            }
+            catch (AggregateException e)
+            {
+                foreach (var ex in e.InnerExceptions)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+
+            return false;
+        }
+
         private async Task<TokenInfo> RefreshAccessToken(TokenInfo token, CancellationToken cancelToken)
         {
             if (token == null) throw new ArgumentNullException("token");
@@ -118,7 +184,8 @@ namespace DeviceOAuth2
                     Site = _endPoint.Name,
                     RefreshToken = token.RefreshToken,
                     AccessToken = (string)response["access_token"],
-                    Expiry = DateTime.UtcNow + TimeSpan.FromSeconds((long)response["expires_in"])
+                    Expiry = DateTime.UtcNow + TimeSpan.FromSeconds((long)response["expires_in"]),
+                    Scheme = _endPoint.Scheme
                 };
             }
         }
@@ -183,7 +250,8 @@ namespace DeviceOAuth2
                                 Site = _endPoint.Name,
                                 AccessToken = (string)tokenResponse["access_token"],
                                 RefreshToken = tokenResponse.ContainsKey("refresh_token") ? (string)tokenResponse["refresh_token"] : null,
-                                Expiry = tokenResponse.ContainsKey("expires_in") ? DateTime.UtcNow + TimeSpan.FromSeconds((long)tokenResponse["expires_in"]) : DateTime.MaxValue
+                                Expiry = tokenResponse.ContainsKey("expires_in") ? DateTime.UtcNow + TimeSpan.FromSeconds((long)tokenResponse["expires_in"]) : DateTime.MaxValue,
+                                Scheme = _endPoint.Scheme
                             };
                         }
 

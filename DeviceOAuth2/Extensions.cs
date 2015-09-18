@@ -20,7 +20,7 @@ namespace DeviceOAuth2
                 {
                     throw new UnauthorizedAccessException("The user denied access");
                 }
-                else if (!msg.Contains("pending"))
+                else if (!msg.Contains("pending")) // while waiting for auth endpoints return error::pending
                 {
                     throw new InvalidOperationException(msg);
                 }
@@ -44,7 +44,7 @@ namespace DeviceOAuth2
                 return s;
             }
 
-            // google returns name value pair where value is an object with a property of message {error, {message, "message"}}
+            // facebook returns name value pair where value is an object with a property of message {error, {message, "message"}}
             var expando = o as IDictionary<string, object>;
             if (expando != null && expando.ContainsKey("message"))
             {

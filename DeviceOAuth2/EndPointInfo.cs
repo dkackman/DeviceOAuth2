@@ -36,6 +36,16 @@
         public string Name { get; set; }
 
         /// <summary>
+        /// The Auth scheme used by the token
+        /// </summary>
+        public string Scheme { get; set; }
+
+        /// <summary>
+        /// Uri to use in order to check the current status of the <see cref="TokenInfo.AccessToken"/>
+        /// </summary>
+        public string CheckUri { get; set; }
+
+        /// <summary>
         /// Description of Google's device auth endpoint
         /// </summary>
         public static EndPointInfo Google
@@ -49,7 +59,9 @@
                     TokenPath = "token/",
                     DevicePath = "device/code/",
                     VerificationAddressName = "verification_url",
-                    DeviceCodeName = "device_code"
+                    DeviceCodeName = "device_code",
+                    Scheme = "OAuth",
+                    CheckUri = "https://www.googleapis.com/oauth2/v1/userinfo"
                 };
             }
         }
@@ -68,7 +80,9 @@
                     TokenPath = "device/",
                     DevicePath = "device/",
                     VerificationAddressName = "verification_uri",
-                    DeviceCodeName = "code"
+                    DeviceCodeName = "code",
+                    Scheme = "Bearer",
+                    CheckUri = "https://graph.facebook.com/v2.4/me"
                 };
             }
         }
