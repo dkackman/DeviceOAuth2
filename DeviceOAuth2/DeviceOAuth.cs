@@ -141,6 +141,8 @@ namespace DeviceOAuth2
         /// <returns></returns>
         public async Task<bool> CheckToken(TokenInfo token, CancellationToken cancelToken)
         {
+            if (token == null) throw new ArgumentNullException("token");
+
             try
             {
                 var defaults = new DynamicRestClientDefaults()
