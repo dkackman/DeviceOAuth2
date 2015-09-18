@@ -41,7 +41,8 @@
         public string Scheme { get; set; }
 
         /// <summary>
-        /// Uri to use in order to check the current status of the <see cref="TokenInfo.AccessToken"/>
+        /// Uri to use in order to check the current status of the <see cref="TokenInfo.AccessToken"/>.
+        /// The scope passed to the <see cref="DeviceOAuth"/> object must encompass this endpoint for <see cref="IDeviceOAuth2.CheckToken(TokenInfo)"/> to work
         /// </summary>
         public string CheckUri { get; set; }
 
