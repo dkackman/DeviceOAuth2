@@ -1,14 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Diagnostics;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 
 using DeviceOAuth2;
-
-using DynamicRestProxy.PortableHttpClient;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -19,17 +16,31 @@ namespace DeviceAuthConsole
     {
         static void Main(string[] args)
         {
-            var task = Go();
+            int choice = 0;
+
+            while (!(choice == 1 || choice == 2))
+            {
+                Console.WriteLine("Choose the endpoint to authorize:");
+                Console.WriteLine("\t1) Google");
+                Console.WriteLine("\t2) Facebook");
+
+                var line = Console.ReadLine();
+                int.TryParse(line, out choice);
+            }
+
+            var endpoint = choice == 1 ? EndPointInfo.Google : EndPointInfo.Facebook;
+
+            var task = Go(endpoint);
             task.Wait();
 
             Console.WriteLine("\n\nPress any key to continue...");
             Console.ReadKey();
         }
 
-        private static async Task Go()
+        private static async Task Go(EndPointInfo endpoint)
         {
-            var keys = GetAppCredentials("Facebook");
-            IDeviceOAuth2 auth = new DeviceOAuth(EndPointInfo.Facebook, (string)keys.scopes, (string)keys.client_id, (string)keys.client_secret);
+            var keys = GetAppCredentials(endpoint.Name);
+            IDeviceOAuth2 auth = new DeviceOAuth(endpoint, (string)keys.scopes, (string)keys.client_id, (string)keys.client_secret);
 
             auth.WaitingForConfirmation += (o, e) =>
             {
@@ -52,7 +63,10 @@ namespace DeviceAuthConsole
             {
                 var token = await auth.Authorize(null);
 
-                await ShowUserProfile(token);
+                dynamic profile = await auth.GetProfile(token);
+
+                Console.WriteLine("");
+                Console.WriteLine("Name = " + profile.name);
             }
             catch (AggregateException e)
             {
@@ -66,37 +80,6 @@ namespace DeviceAuthConsole
             {
                 Console.WriteLine("Error:");
                 Console.WriteLine(e.Message);
-            }
-        }
-
-        private static async Task ShowUserProfile(TokenInfo token)
-        {
-            Console.WriteLine("");
-            Debug.Assert(!string.IsNullOrEmpty(token.AccessToken));
-
-            var defaults = new DynamicRestClientDefaults()
-            {
-                AuthScheme = token.Scheme,
-                AuthToken = token.AccessToken
-            };
-
-            if (token.Site == "Google")
-            {
-                using (dynamic client = new DynamicRestClient("https://www.googleapis.com/oauth2/v1/userinfo", defaults))
-                {
-                    dynamic v = await client.get();
-
-                    Console.WriteLine("Name = " + v.name);
-                }
-            }
-            else if (token.Site == "Facebook")
-            {
-                using (dynamic client = new DynamicRestClient("https://graph.facebook.com/v2.3/me", defaults))
-                {
-                    dynamic v = await client.get(fields: "name");
-
-                    Console.WriteLine("Name = " + v.name);
-                }
             }
         }
 

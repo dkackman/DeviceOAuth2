@@ -122,7 +122,7 @@ namespace DeviceOAuth2
 
         /// <summary>
         /// Checks the validity of a token against the auth endpoint.
-        /// It does this by makeing a get request to the token's <see cref="EndPointInfo.CheckUri"/>
+        /// It does this by makeing a get request to the token's <see cref="EndPointInfo.ProfileUri"/>
         /// This is useful for ensuring that the user hasn't revoked authorization for a stored token and that it hasn't expired
         /// </summary>
         /// <param name="token">The token to check</param>
@@ -133,7 +133,7 @@ namespace DeviceOAuth2
 
         /// <summary>
         /// Checks the validity of a token against the auth endpoint.
-        /// It does this by makeing a get request to the token's <see cref="EndPointInfo.CheckUri"/>
+        /// It does this by makeing a get request to the token's <see cref="EndPointInfo.ProfileUri"/>
         /// This is useful for ensuring that the user hasn't revoked authorization for a stored token and that it hasn't expired
         /// </summary>
         /// <param name="token">The token to check</param>
@@ -141,21 +141,9 @@ namespace DeviceOAuth2
         /// <returns></returns>
         public async Task<bool> CheckToken(TokenInfo token, CancellationToken cancelToken)
         {
-            if (token == null) throw new ArgumentNullException("token");
-
             try
             {
-                var defaults = new DynamicRestClientDefaults()
-                {
-                    AuthScheme = EndPoint.Scheme,
-                    AuthToken = token.AccessToken
-                };
-
-                using (dynamic checkEndpoint = new DynamicRestClient(_endPoint.CheckUri, defaults))
-                {
-                    var response = await checkEndpoint.get(cancelToken);
-                    return response != null;
-                }
+                return await GetProfile(token, cancelToken) != null;
             }
             catch (AggregateException e)
             {
@@ -170,6 +158,39 @@ namespace DeviceOAuth2
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Returns the user's endpoint profile using <see cref="EndPointInfo.ProfileUri"/>
+        /// </summary>
+        /// <param name="token">The token</param>
+        /// <returns>User's profile</returns>
+        public async Task<dynamic> GetProfile(TokenInfo token)
+        {
+            return await GetProfile(token, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Returns the user's endpoint profile using <see cref="EndPointInfo.ProfileUri"/>
+        /// </summary>
+        /// <param name="token">The token</param>
+        /// <param name="cancelToken">A cancellation token</param>
+        /// <returns>User's profile</returns>
+        public async Task<dynamic> GetProfile(TokenInfo token, CancellationToken cancelToken)
+        {
+            if (token == null) throw new ArgumentNullException("token");
+
+            var defaults = new DynamicRestClientDefaults()
+            {
+                AuthScheme = EndPoint.Scheme,
+                AuthToken = token.AccessToken
+            };
+
+            using (dynamic checkEndpoint = new DynamicRestClient(_endPoint.ProfileUri, defaults))
+            {
+                var response = await checkEndpoint.get(cancelToken);
+                return response;
+            }
         }
 
         private async Task<TokenInfo> RefreshAccessToken(TokenInfo token, CancellationToken cancelToken)

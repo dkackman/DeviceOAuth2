@@ -41,10 +41,9 @@
         public string Scheme { get; set; }
 
         /// <summary>
-        /// Uri to use in order to check the current status of the <see cref="TokenInfo.AccessToken"/>.
-        /// The scope passed to the <see cref="DeviceOAuth"/> object must encompass this endpoint for <see cref="IDeviceOAuth2.CheckToken(TokenInfo)"/> to work
+        /// Uri that will return the user profile fo the auth endpoint once authorized
         /// </summary>
-        public string CheckUri { get; set; }
+        public string ProfileUri { get; set; }
 
         /// <summary>
         /// Description of Google's device auth endpoint
@@ -62,7 +61,7 @@
                     VerificationAddressName = "verification_url",
                     DeviceCodeName = "device_code",
                     Scheme = "OAuth",
-                    CheckUri = "https://www.googleapis.com/oauth2/v1/userinfo"
+                    ProfileUri = "https://www.googleapis.com/oauth2/v1/userinfo"
                 };
             }
         }
@@ -83,7 +82,7 @@
                     VerificationAddressName = "verification_uri",
                     DeviceCodeName = "code",
                     Scheme = "Bearer",
-                    CheckUri = "https://graph.facebook.com/v2.4/me"
+                    ProfileUri = "https://graph.facebook.com/v2.4/me"
                 };
             }
         }
