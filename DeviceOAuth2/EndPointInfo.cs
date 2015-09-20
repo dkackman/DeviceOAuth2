@@ -82,7 +82,7 @@
                     VerificationAddressName = "verification_uri",
                     DeviceCodeName = "code",
                     Scheme = "Bearer",
-                    ProfileUri = "https://graph.facebook.com/v2.4/me"
+                    ProfileUri = "https://graph.facebook.com/v2.4/me?fields=name,picture"
                 };
             }
         }
