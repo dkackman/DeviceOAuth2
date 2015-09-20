@@ -45,7 +45,7 @@ namespace DeviceAuthConsole
             auth.WaitingForConfirmation += (o, e) =>
             {
                 Console.CursorLeft = 0;
-                Console.Write(e + " seconds left");
+                Console.Write(e + " seconds left         ");
             };
             auth.PromptUser += (o, e) =>
             {

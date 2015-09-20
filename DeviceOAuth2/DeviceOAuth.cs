@@ -105,11 +105,9 @@ namespace DeviceOAuth2
                     {
                         return await RefreshAccessToken(token, cancelToken);
                     }
-                    else
-                    {
-                        // the token doesn't support refresh so just initiate the new token flow
-                        return await GetNewAccessToken(cancelToken);
-                    }
+
+                    // the token doesn't support refresh so just initiate the new token flow
+                    return await GetNewAccessToken(cancelToken);
                 }
 
                 return token; // this token is still valid just pass it back
@@ -118,7 +116,6 @@ namespace DeviceOAuth2
             // no stored token - go get a new one
             return await GetNewAccessToken(cancelToken);
         }
-
 
         /// <summary>
         /// Checks the validity of a token against the auth endpoint.
