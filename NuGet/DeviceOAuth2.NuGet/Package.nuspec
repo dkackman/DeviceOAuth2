@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DeviceOAuth2</id>
-    <version>2.1.0-alpha-1</version>
+    <version>2.1.0</version>
     <title>DeviceOAuth2</title>
     <authors>dkackman</authors>
     <owners></owners>
@@ -21,7 +21,7 @@
       - Expose IDeviceOAuthInfo properties
       - promote DynamicRestClient dependency to 3.0
       2.1.0
-      - Add CheckToken and GetProfile
+      - Add CheckToken and GetProfile to IDeviceOAuthInfo
     </releaseNotes>
     <summary>
     </summary>

@@ -6,7 +6,7 @@ using Windows.Security.Credentials;
 
 namespace UnitTestCredentialManager
 {
-    class VaultWrapper 
+    public sealed class VaultWrapper 
     {
         public bool CredentialExists(string app, string userName)
         {            
