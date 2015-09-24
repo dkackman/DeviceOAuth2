@@ -5,7 +5,7 @@ namespace DeviceOAuth2
     /// <summary>
     /// Return data from the initial auth request
     /// </summary>
-    public class AuthInfo
+    public sealed class AuthInfo
     {
         /// <summary>
         /// The time, in seconds, to pause between polls to see if the user has authorized the code

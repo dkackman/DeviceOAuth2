@@ -15,7 +15,7 @@ namespace DeviceOAuth2
     /// <summary>
     /// Implementation of device based OAuth2 flow
     /// </summary>
-    public class DeviceOAuth : IDeviceOAuth2, IDeviceOAuth2Stepwise
+    public sealed class DeviceOAuth : IDeviceOAuth2, IDeviceOAuth2Stepwise
     {
         /// <summary>
         /// Event raised when the auth confirmation url and code are known

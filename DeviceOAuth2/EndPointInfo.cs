@@ -3,7 +3,7 @@
     /// <summary>
     /// Properties describing a device Oauth endpoint
     /// </summary>
-    public class EndPointInfo
+    public sealed class EndPointInfo
     {
         /// <summary>
         /// The base Uri for the endpoint

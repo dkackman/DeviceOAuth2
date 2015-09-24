@@ -5,7 +5,7 @@ namespace DeviceOAuth2
     /// <summary>
     /// Information about the Auth token
     /// </summary>
-    public class TokenInfo
+    public sealed class TokenInfo
     {
         /// <summary>
         /// The access token itself
@@ -18,7 +18,7 @@ namespace DeviceOAuth2
         public string RefreshToken { get; set; }
 
         /// <summary>
-        /// The Expiration time of the access token. Will be DateTime.MaxValue if refresh is unknown or unsupported by teh endpoint
+        /// The Expiration time of the access token. Will be DateTime.MaxValue if refresh is unknown or unsupported by tje endpoint
         /// </summary>
         public DateTime Expiry { get; set; } = DateTime.MinValue;
 
