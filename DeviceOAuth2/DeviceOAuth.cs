@@ -60,7 +60,7 @@ namespace DeviceOAuth2
             _endPoint = authEndPoint;
             _scope = scope;
             _clientId = clientId;
-            _clientSecret = clientSecret == "" ? null : clientSecret; // we want to change empty string to null so it gets culled form the paramrter list
+            _clientSecret = clientSecret == "" ? null : clientSecret; // we want to change empty string to null so it gets culled form the parameter list
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace DeviceOAuth2
         public string Scope { get { return _scope; } }
 
         /// <summary>
-        /// The ClientId requesting authorization
+        /// The ClientId of the app requesting authorization
         /// </summary>
         public string ClientId { get { return _clientId; } }
 
@@ -119,7 +119,7 @@ namespace DeviceOAuth2
 
         /// <summary>
         /// Checks the validity of a token against the auth endpoint.
-        /// It does this by makeing a get request to the token's <see cref="EndPointInfo.ProfileUri"/>
+        /// It does this by making a get request to the token's <see cref="EndPointInfo.ProfileUri"/>
         /// This is useful for ensuring that the user hasn't revoked authorization for a stored token and that it hasn't expired
         /// </summary>
         /// <param name="token">The token to check</param>
@@ -130,7 +130,7 @@ namespace DeviceOAuth2
 
         /// <summary>
         /// Checks the validity of a token against the auth endpoint.
-        /// It does this by makeing a get request to the token's <see cref="EndPointInfo.ProfileUri"/>
+        /// It does this by making a get request to the token's <see cref="EndPointInfo.ProfileUri"/>
         /// This is useful for ensuring that the user hasn't revoked authorization for a stored token and that it hasn't expired
         /// </summary>
         /// <param name="token">The token to check</param>
@@ -183,10 +183,9 @@ namespace DeviceOAuth2
                 AuthToken = token.AccessToken
             };
 
-            using (dynamic checkEndpoint = new DynamicRestClient(_endPoint.ProfileUri, defaults))
+            using (dynamic profileEndpoint = new DynamicRestClient(_endPoint.ProfileUri, defaults))
             {
-                var response = await checkEndpoint.get(cancelToken);
-                return response;
+                return await profileEndpoint.get(cancelToken);
             }
         }
 
@@ -226,8 +225,8 @@ namespace DeviceOAuth2
                 // this call gets the device code, verification url and user code
                 var deviceResponse = await authEndPoint(_endPoint.DevicePath).post(cancelToken, client_id: _clientId, scope: _scope, type: "device_code") as IDictionary<string, object>;
 
-                long expiration = (long)deviceResponse["expires_in"];
                 long interval = (long)deviceResponse["interval"];
+                long expiration = (long)deviceResponse["expires_in"];
 
                 return new AuthInfo()
                 {

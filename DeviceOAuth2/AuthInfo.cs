@@ -28,7 +28,7 @@ namespace DeviceOAuth2
         public DateTimeOffset Expiration { get; internal set; }
 
         /// <summary>
-        /// The Uri the user needs to navigate to and enter the user code
+        /// The Uri the user needs to navigate to and enter the <see cref="UserCode"/>
         /// </summary>
         public string VerificationUri { get; internal set; }
 

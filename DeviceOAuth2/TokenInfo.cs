@@ -3,7 +3,7 @@
 namespace DeviceOAuth2
 {
     /// <summary>
-    /// Information about the Auth token
+    /// Information about an OAuth2 token
     /// </summary>
     public sealed class TokenInfo
     {
@@ -18,17 +18,17 @@ namespace DeviceOAuth2
         public string RefreshToken { get; set; }
 
         /// <summary>
-        /// The Expiration time of the access token. Will be DateTime.MaxValue if refresh is unknown or unsupported by tje endpoint
+        /// The Expiration time of the access token. Will be DateTime.MaxValue if refresh is unknown or unsupported by the endpoint
         /// </summary>
         public DateTime Expiry { get; set; } = DateTime.MinValue;
 
         /// <summary>
-        /// The site that the token is associated with
+        /// The name of the site that the token is associated with
         /// </summary>
         public string Site { get; set; }
 
         /// <summary>
-        /// The Auth scheme used by the token
+        /// The Auth scheme to use with the <see cref="AccessToken"/>
         /// </summary>
         public string Scheme { get; set; }
     }

@@ -11,7 +11,7 @@ namespace DeviceOAuth2
         /// <summary>
         /// Begins the authorization workflow by getting a device and user code from the endpoint
         /// </summary>
-        /// <returns>An <see cref="AuthInfo"/>. The user should be presented the VerificationUri and UserCode as well as instruction. 
+        /// <returns>An <see cref="AuthInfo"/>. The user should be presented the VerificationUri and UserCode as well as instruction on what to do with them. 
         /// This object should then be passed to <see cref="WaitForUserConsent(AuthInfo)"/></returns>
         Task<AuthInfo> StartAuthorization();
 
@@ -19,13 +19,13 @@ namespace DeviceOAuth2
         /// Begins the authorization workflow by getting a device and user code from the endpoint
         /// </summary>
         /// <param name="cancelToken">A <see cref="CancellationToken"/></param>
-        /// <returns>An <see cref="AuthInfo"/>. The user should be presented the VerificationUri and UserCode as well as instruction. 
+        /// <returns>An <see cref="AuthInfo"/>. The user should be presented the VerificationUri and UserCode as well as instruction on what to do with them. 
         /// This object should then be passed to <see cref="WaitForUserConsent(AuthInfo, CancellationToken)"/></returns>
         Task<AuthInfo> StartAuthorization(CancellationToken cancelToken);
 
         /// <summary>
         /// Polls the oauth endpoint until:
-        /// 1) The user authorizes acess
+        /// 1) The user authorizes access
         /// 2) The user denies access
         /// 3) The authorization times out (endpoint specific)
         /// </summary>
@@ -35,7 +35,7 @@ namespace DeviceOAuth2
 
         /// <summary>
         /// Polls the oauth endpoint until:
-        /// 1) The user authorizes acess
+        /// 1) The user authorizes access
         /// 2) The user denies access
         /// 3) The authorization times out (endpoint specific)
         /// </summary>
@@ -45,14 +45,14 @@ namespace DeviceOAuth2
         Task<TokenInfo> WaitForUserConsent(AuthInfo info, CancellationToken cancelToken);
 
         /// <summary>
-        /// Refreshes aan access token if supported
+        /// Refreshes an access token if supported
         /// </summary>
         /// <param name="token">The token to refresh</param>
         /// <returns>Refreshed token</returns>
         Task<TokenInfo> RefreshAccessToken(TokenInfo token);
 
         /// <summary>
-        /// Refreshes aan access token if supported
+        /// Refreshes an access token if supported
         /// </summary>
         /// <param name="token">The token to refresh</param>
         /// <param name="cancelToken">A <see cref="CancellationToken"/></param>
