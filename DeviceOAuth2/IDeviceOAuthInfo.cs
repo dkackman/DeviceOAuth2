@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DeviceOAuth2
@@ -8,6 +9,12 @@ namespace DeviceOAuth2
     /// </summary>
     public interface IDeviceOAuthInfo
     {
+        /// <summary>
+        /// Status event raised each time confirmation is checked for
+        /// int argument is the number of seconds until the authorization request times out
+        /// </summary>
+        event EventHandler<int> WaitingForConfirmation;
+
         /// <summary>
         /// The endpoint of the OAuth2 interface
         /// </summary>

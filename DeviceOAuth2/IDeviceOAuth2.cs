@@ -16,12 +16,6 @@ namespace DeviceOAuth2
         event EventHandler<AuthInfo> PromptUser;
 
         /// <summary>
-        /// Status event raised each time confirmation is checked for
-        /// int argument is the number of seconds until the authorization request times out
-        /// </summary>
-        event EventHandler<int> WaitingForConfirmation;
-
-        /// <summary>
         /// Starts the authorization flow
         /// </summary>
         /// <param name="token">An existing token that can be checked for needing to be refreshed. Pass null if the app has never been authorized</param>
