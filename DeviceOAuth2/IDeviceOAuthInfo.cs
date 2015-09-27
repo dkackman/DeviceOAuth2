@@ -25,6 +25,7 @@ namespace DeviceOAuth2
         /// </summary>
         string Scope { get; }
 
+
         /// <summary>
         /// The ClientId of the app requesting authorization
         /// </summary>
