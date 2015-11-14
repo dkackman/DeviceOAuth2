@@ -7,11 +7,11 @@ Tested with [Google Device OAuth2 Flow](https://developers.google.com/identity/p
 
 Also tested on Windows IoT Core (see example Facebook app).
 
-OAuth flow for scenarios with limited access to input devices or web browsers, like console apps, or IoT devices.
+OAuth flow for scenarios with limited access to input devices or web browsers, like console apps or IoT devices.
 
     IDeviceOAuth2 auth = new DeviceOAuth(EndPointInfo.Google, "scope", "client_id", "client_secret");
 
-    auth.AuthenticatePrompt += (o, e) =>
+    auth.PromptUser += (o, e) =>
     {
         Console.WriteLine("Go to this url on any computer:");
         Console.WriteLine(e.VerificationUri);
@@ -19,6 +19,6 @@ OAuth flow for scenarios with limited access to input devices or web browsers, l
         Console.WriteLine(e.UserCode);
     };
 
-    var token = await auth.Authenticate(null);
+    var token = await auth.Authorize(null);
 
     
