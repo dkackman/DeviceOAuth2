@@ -26,7 +26,7 @@
         public string VerificationAddressName { get; set; }
 
         /// <summary>
-        /// The name of the paramter that describes the code
+        /// The name of the parameter that describes the code
         /// </summary>
         public string DeviceCodeName { get; set; }
 

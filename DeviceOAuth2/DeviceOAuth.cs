@@ -82,7 +82,7 @@ namespace DeviceOAuth2
         /// Starts the authorization flow
         /// </summary>
         /// <param name="token">An existing token that can be checked for needing to be refreshed. Pass null if the app has never been authorized</param>
-        /// <returns>An auth token. If the token paramter is still valid it will be returned</returns>
+        /// <returns>An auth token. If the token parameter is still valid it will be returned</returns>
         public async Task<TokenInfo> Authorize(TokenInfo token)
         {
             return await Authorize(token, CancellationToken.None);
