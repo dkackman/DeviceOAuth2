@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net;
 
 using DynamicRestProxy.PortableHttpClient;
 
@@ -53,11 +52,10 @@ namespace DeviceOAuth2
         /// <param name="clientSecret"></param>
         public DeviceOAuth(EndPointInfo authEndPoint, string scope, string clientId, string clientSecret)
         {
-            if (authEndPoint == null) throw new ArgumentNullException("authEndPoint");
             if (string.IsNullOrEmpty(scope)) throw new InvalidOperationException("scope cannot be empty");
             if (string.IsNullOrEmpty(clientId)) throw new InvalidOperationException("clientId cannot be empty");
 
-            _endPoint = authEndPoint;
+            _endPoint = authEndPoint ?? throw new ArgumentNullException("authEndPoint");
             _scope = scope;
             _clientId = clientId;
             _clientSecret = clientSecret == "" ? null : clientSecret; // we want to change empty string to null so it gets culled form the parameter list

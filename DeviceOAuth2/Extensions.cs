@@ -38,15 +38,13 @@ namespace DeviceOAuth2
 
             // google returns name value pair where value is a string {error, "message"}
             object o = d["error"];
-            var s = o as string;
-            if (s != null)
+            if (o is string s)
             {
                 return s;
             }
 
             // facebook returns name value pair where value is an object with a property of message {error, {message, "message"}}
-            var expando = o as IDictionary<string, object>;
-            if (expando != null && expando.ContainsKey("message"))
+            if (o is IDictionary<string, object> expando && expando.ContainsKey("message"))
             {
                 return (string)expando["message"];
             }
