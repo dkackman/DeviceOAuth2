@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{1E6819DC-8F91-43D9-8A34-B6E9AE4D5757}"
 EndProject
@@ -21,7 +21,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Pictureframe", "Ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestCredentialManager", "UnitTests\UnitTestCredentialManager\UnitTestCredentialManager.csproj", "{DEF8264D-6275-411C-AEC6-57FE21198569}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "docfx", "docfx\docfx.shproj", "{2A4CF7BF-5556-42D9-A934-CBFE4A2DAC6B}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		docfx\docfx.projitems*{2a4cf7bf-5556-42d9-a934-cbfe4a2dac6b}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM

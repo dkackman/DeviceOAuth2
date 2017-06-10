@@ -253,9 +253,9 @@ namespace DeviceOAuth2
 
                     // check the oauth token endpoint ot see if access has been authorized yet
                     using (HttpResponseMessage message = await authEndPoint(_endPoint.TokenPath).post(typeof(HttpResponseMessage), cancelToken, client_id: _clientId, client_secret: _clientSecret, code: authInfo.DeviceCode, type: "device_token", grant_type: "http://oauth.net/grant_type/device/1.0"))
-                    {
-                        // for some reason facebook returns 400 bad request while waiting for authorization from the user
-                        if (message.StatusCode != HttpStatusCode.BadRequest)
+                    {                        
+                        // not all endpoints return the same status code while waiting for user authorization
+                        if (message.StatusCode != _endPoint.PendingStatusCode)
                         {
                             message.EnsureSuccessStatusCode();
                         }
@@ -286,12 +286,12 @@ namespace DeviceOAuth2
             }
         }
 
-        private void OnWaitingForConfirmation(long secondsLeft)
+        private void OnWaitingForConfirmation(int secondsLeft)
         {
             var e = WaitingForConfirmation;
             if (e != null)
             {
-                e.BeginInvoke(this, (int)secondsLeft, null, null);
+                e.BeginInvoke(this, secondsLeft, null, null);
             }
         }
 

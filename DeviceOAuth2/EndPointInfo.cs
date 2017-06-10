@@ -1,4 +1,6 @@
-﻿namespace DeviceOAuth2
+﻿using System.Net;
+
+namespace DeviceOAuth2
 {
     /// <summary>
     /// Properties describing a device Oauth endpoint
@@ -39,6 +41,12 @@
         /// The Auth scheme used by the resulting <see cref="TokenInfo"/>
         /// </summary>
         public string Scheme { get; set; }
+
+        /// <summary>
+        /// <see cref="HttpStatusCode"/> returned by the auth endpoint while the auth process is still pending
+        /// (i.e. still waiting for user confimration)
+        /// </summary>
+        public HttpStatusCode PendingStatusCode { get; set; } = HttpStatusCode.OK;
 
         /// <summary>
         /// Uri that will return the user profile for the auth endpoint once authorized
@@ -84,7 +92,8 @@
                     VerificationAddressName = "verification_uri",
                     DeviceCodeName = "code",
                     Scheme = "Bearer",
-                    ProfileUri = "https://graph.facebook.com/v2.5/me?fields=name,picture"
+                    ProfileUri = "https://graph.facebook.com/v2.5/me?fields=name,picture",
+                    PendingStatusCode = HttpStatusCode.BadRequest // for some reason facebook returns 400 bad request while waiting for authorization from the user
                 };
             }
         }
