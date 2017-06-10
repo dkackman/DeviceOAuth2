@@ -68,7 +68,33 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="deviceoauth2-api">DeviceOAuth2 API</h1>
 
-</article>
+<p>There are two patterns that can be used with <a class="xref" href="DeviceOAuth2.DeviceOAuth.html">DeviceOAuth</a>:</p>
+<h2 id="event-based">Event Based</h2>
+<p>Events on the <a class="xref" href="DeviceOAuth2.IDeviceOAuth2.html">IDeviceOAuth2</a> interface are raised as communication with the auth endpoint occurs.</p>
+<pre><code>IDeviceOAuth2 auth = new DeviceOAuth(EndPointInfo.Google, &quot;scope&quot;, &quot;client_id&quot;, &quot;client_secret&quot;);
+
+auth.PromptUser += (o, e) =&gt;
+{
+    Console.WriteLine(&quot;Go to this url on any computer:&quot;);
+    Console.WriteLine(e.VerificationUri);
+    Console.WriteLine(&quot;And enter this code:&quot;);
+    Console.WriteLine(e.UserCode);
+};
+
+var token = await auth.Authorize(null);
+</code></pre><h2 id="stepwise">Stepwise</h2>
+<p><a class="xref" href="DeviceOAuth2.IDeviceOAuth2.html">IDeviceOAuth2Stepwise</a> returns state data and requires client code to call methods in the correct order.</p>
+<pre><code>IDeviceOAuth2Stepwise auth = new DeviceOAuth(EndPointInfo.Google, &quot;scope&quot;, &quot;client_id&quot;, &quot;client_secret&quot;);
+
+var info = await auth.StartAuthorization();
+
+Console.WriteLine(&quot;Go to this url on any computer:&quot;);
+Console.WriteLine(info.VerificationUri);
+Console.WriteLine(&quot;And enter this code:&quot;);
+Console.WriteLine(info.UserCode);
+
+var token = await auth.WaitForUserConsent(info);
+</code></pre></article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
