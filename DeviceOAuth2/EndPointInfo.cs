@@ -54,7 +54,7 @@ namespace DeviceOAuth2
         public string ProfileUri { get; set; }
 
         /// <summary>
-        /// Description of Google's device oauth2 endpoint 
+        /// Description of Google's device oauth2 endpoint.
         /// https://developers.google.com/identity/protocols/OAuth2ForDevices
         /// </summary>
         public static EndPointInfo Google
@@ -76,7 +76,7 @@ namespace DeviceOAuth2
         }
 
         /// <summary>
-        /// Description of Facebook's oauth2 endpoint
+        /// Description of Facebook's oauth2 endpoint.
         /// https://developers.facebook.com/docs/facebook-login/for-devices
         /// </summary>
         public static EndPointInfo Facebook

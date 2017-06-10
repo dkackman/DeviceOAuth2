@@ -13,13 +13,13 @@ using Newtonsoft.Json;
 namespace DeviceOAuth2
 {
     /// <summary>
-    /// Implementation of device based OAuth2 flow
+    /// Implementation of device based OAuth2 flow.
     /// </summary>
     public sealed class DeviceOAuth : IDeviceOAuth2, IDeviceOAuth2Stepwise
     {
         /// <summary>
-        /// Event raised when the auth confirmation url and code are known
-        /// Display these to the user and tell them to enter the code at the referenced web page
+        /// Event raised when the auth confirmation url and code are known.
+        /// Display these to the user and tell them to enter the code at the referenced web page.
         /// </summary>
         public event EventHandler<AuthInfo> PromptUser;
 
@@ -69,19 +69,19 @@ namespace DeviceOAuth2
         public EndPointInfo EndPoint { get { return _endPoint; } }
 
         /// <summary>
-        /// The scope(s) being authorized
+        /// The scope(s) being authorized.
         /// </summary>
         public string Scope { get { return _scope; } }
 
         /// <summary>
-        /// The ClientId of the app requesting authorization
+        /// The ClientId of the app requesting authorization.
         /// </summary>
         public string ClientId { get { return _clientId; } }
 
         /// <summary>
         /// Starts the authorization flow
         /// </summary>
-        /// <param name="token">An existing token that can be checked for needing to be refreshed. Pass null if the app has never been authorized</param>
+        /// <param name="token">An existing token that can be checked for needing to be refreshed. Pass null if the app has never been authorized.</param>
         /// <returns>An auth token. If the token parameter is still valid it will be returned</returns>
         public async Task<TokenInfo> Authorize(TokenInfo token)
         {
@@ -89,7 +89,7 @@ namespace DeviceOAuth2
         }
 
         /// <summary>
-        /// Starts the authorization flow
+        /// Starts the authorization flow.
         /// </summary>
         /// <param name="token">An existing token that can be checked for needing to be refreshed. Pass null if the app has never been authorized</param>
         /// <param name="cancelToken">Cancellation token</param>
@@ -119,8 +119,8 @@ namespace DeviceOAuth2
 
         /// <summary>
         /// Checks the validity of a token against the auth endpoint.
-        /// It does this by making a get request to the token's <see cref="EndPointInfo.ProfileUri"/>
-        /// This is useful for ensuring that the user hasn't revoked authorization for a stored token and that it hasn't expired
+        /// It does this by making a get request to the token's <see cref="EndPointInfo.ProfileUri"/>.
+        /// This is useful for ensuring that the user hasn't revoked authorization for a stored token and that it hasn't expired.
         /// </summary>
         /// <param name="token">The token to check</param>
         public async Task<bool> CheckToken(TokenInfo token)
@@ -130,8 +130,8 @@ namespace DeviceOAuth2
 
         /// <summary>
         /// Checks the validity of a token against the auth endpoint.
-        /// It does this by making a get request to the token's <see cref="EndPointInfo.ProfileUri"/>
-        /// This is useful for ensuring that the user hasn't revoked authorization for a stored token and that it hasn't expired
+        /// It does this by making a get request to the token's <see cref="EndPointInfo.ProfileUri"/>.
+        /// This is useful for ensuring that the user hasn't revoked authorization for a stored token and that it hasn't expired.
         /// </summary>
         /// <param name="token">The token to check</param>
         /// <param name="cancelToken">A cancellation token</param>
@@ -158,7 +158,7 @@ namespace DeviceOAuth2
         }
 
         /// <summary>
-        /// Returns the user's endpoint profile using <see cref="EndPointInfo.ProfileUri"/>
+        /// Returns the user's endpoint profile using <see cref="EndPointInfo.ProfileUri"/>.
         /// </summary>
         /// <param name="token">The token</param>
         /// <returns>User's profile</returns>
@@ -168,7 +168,7 @@ namespace DeviceOAuth2
         }
 
         /// <summary>
-        /// Returns the user's endpoint profile using <see cref="EndPointInfo.ProfileUri"/>
+        /// Returns the user's endpoint profile using <see cref="EndPointInfo.ProfileUri"/>.
         /// </summary>
         /// <param name="token">The token</param>
         /// <param name="cancelToken">A cancellation token</param>

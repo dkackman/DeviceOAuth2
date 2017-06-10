@@ -4,19 +4,19 @@ using System.Threading.Tasks;
 namespace DeviceOAuth2
 {    
     /// <summary>
-     /// Interface for device based OAuth2 flow that does not use event callbacks
+     /// Interface for device based OAuth2 flow that does not use event callbacks.
      /// </summary>
     public interface IDeviceOAuth2Stepwise : IDeviceOAuthInfo
     {
         /// <summary>
-        /// Begins the authorization workflow by getting a device and user code from the endpoint
+        /// Begins the authorization workflow by getting a device and user code from the endpoint.
         /// </summary>
         /// <returns>An <see cref="AuthInfo"/>. The user should be presented the VerificationUri and UserCode as well as instruction on what to do with them. 
-        /// This object should then be passed to <see cref="WaitForUserConsent(AuthInfo)"/></returns>
+        /// This object should then be passed to <see cref="WaitForUserConsent(AuthInfo)"/>.</returns>
         Task<AuthInfo> StartAuthorization();
 
         /// <summary>
-        /// Begins the authorization workflow by getting a device and user code from the endpoint
+        /// Begins the authorization workflow by getting a device and user code from the endpoint.
         /// </summary>
         /// <param name="cancelToken">A <see cref="CancellationToken"/></param>
         /// <returns>An <see cref="AuthInfo"/>. The user should be presented the VerificationUri and UserCode as well as instruction on what to do with them. 
@@ -45,14 +45,14 @@ namespace DeviceOAuth2
         Task<TokenInfo> WaitForUserConsent(AuthInfo info, CancellationToken cancelToken);
 
         /// <summary>
-        /// Refreshes an access token if supported
+        /// Refreshes an access token if supported.
         /// </summary>
         /// <param name="token">The token to refresh</param>
         /// <returns>Refreshed token</returns>
         Task<TokenInfo> RefreshAccessToken(TokenInfo token);
 
         /// <summary>
-        /// Refreshes an access token if supported
+        /// Refreshes an access token if supported.
         /// </summary>
         /// <param name="token">The token to refresh</param>
         /// <param name="cancelToken">A <see cref="CancellationToken"/></param>
