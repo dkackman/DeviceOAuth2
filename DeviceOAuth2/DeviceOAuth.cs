@@ -251,7 +251,7 @@ namespace DeviceOAuth2
 
                     // check the oauth token endpoint ot see if access has been authorized yet
                     using (HttpResponseMessage message = await authEndPoint(_endPoint.TokenPath).post(typeof(HttpResponseMessage), cancelToken, client_id: _clientId, client_secret: _clientSecret, code: authInfo.DeviceCode, type: "device_token", grant_type: "http://oauth.net/grant_type/device/1.0"))
-                    {                        
+                    {
                         // not all endpoints return the same status code while waiting for user authorization
                         if (message.StatusCode != _endPoint.PendingStatusCode)
                         {

@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 
 namespace DeviceOAuth2
-{    
+{
     /// <summary>
-     /// Interface for device based OAuth2 flow that does not use event callbacks.
-     /// </summary>
+    /// Interface for device based OAuth2 flow that does not use event callbacks.
+    /// </summary>
     public interface IDeviceOAuth2Stepwise : IDeviceOAuthInfo
     {
         /// <summary>
