@@ -3,7 +3,7 @@
 namespace DeviceOAuth2
 {
     /// <summary>
-    /// Properties describing a device Oauth endpoint
+    /// Properties describing a device OAuth endpoint
     /// </summary>
     public sealed class EndPointInfo
     {
