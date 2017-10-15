@@ -20,6 +20,10 @@ namespace DeviceOAuth2
                 {
                     throw new UnauthorizedAccessException("The user denied access");
                 }
+                else if (msg == "code_expired")
+                {
+                    throw new TimeoutException("Access timeout expired");
+                }
                 else if (!msg.Contains("pending")) // while waiting for auth endpoints return error::pending
                 {
                     throw new InvalidOperationException(msg);
