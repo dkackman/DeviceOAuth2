@@ -32,20 +32,20 @@ namespace DeviceOAuth2
         string ClientId { get; }
 
         /// <summary>
-        /// Checks the validity of a token against the auth endpoint.
+        /// Checks the validity of an auth token against the auth endpoint.
         /// It does this by making a get request to the token's <see cref="EndPointInfo.ProfileUri"/>.
         /// This is useful for ensuring that the user hasn't revoked authorization for a stored token and that it hasn't expired.
         /// </summary>
-        /// <param name="token">The token to check</param>
+        /// <param name="token">The auth token to check</param>
         /// <returns>True if the user profile is return without error</returns>
         Task<bool> CheckToken(TokenInfo token);
 
         /// <summary>
-        /// Checks the validity of a token against the auth endpoint.
+        /// Checks the validity of an auth token against the auth endpoint.
         /// It does this by making a get request to the token's <see cref="EndPointInfo.ProfileUri"/>.
         /// This is useful for ensuring that the user hasn't revoked authorization for a stored token and that it hasn't expired.
         /// </summary>
-        /// <param name="token">The token to check</param>
+        /// <param name="token">The auth token to check</param>
         /// <param name="cancelToken">A cancellation token</param>
         /// <returns>True if the user profile is return without error</returns>
         Task<bool> CheckToken(TokenInfo token, CancellationToken cancelToken);
@@ -53,14 +53,14 @@ namespace DeviceOAuth2
         /// <summary>
         /// Returns the user's endpoint profile using <see cref="EndPointInfo.ProfileUri"/>.
         /// </summary>
-        /// <param name="token">The token</param>
+        /// <param name="token">An auth token</param>
         /// <returns>User's profile</returns>
         Task<dynamic> GetProfile(TokenInfo token);
 
         /// <summary>
         /// Returns the user's endpoint profile using <see cref="EndPointInfo.ProfileUri"/>.
         /// </summary>
-        /// <param name="token">The token</param>
+        /// <param name="token">An auth token</param>
         /// <param name="cancelToken">A cancellation token</param>
         /// <returns>User's profile</returns>
         Task<dynamic> GetProfile(TokenInfo token, CancellationToken cancelToken);

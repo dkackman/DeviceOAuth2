@@ -1,7 +1,6 @@
 # DeviceOAuth2
-Limited input device OAuth 2 flow for .NET
 
-[NuGet Package](https://www.nuget.org/packages/DeviceOAuth2/)
+Limited input device OAuth 2 flow for .NET
 
 Tested with [Google Device OAuth2 Flow](https://developers.google.com/identity/protocols/OAuth2ForDevices) and [Facebook Login for Devices Flow](https://developers.facebook.com/docs/facebook-login/for-devices).
 
@@ -21,7 +20,8 @@ OAuth flow for scenarios with limited access to input devices or web browsers, l
 
     var token = await auth.Authorize(null);
 
-    
-## Quick Start Notes:
+## Quick Start Notes
+
 1. [NuGet Package](https://www.nuget.org/packages/DeviceOAuth2/)
-2. [GitHub Project](https://github.com/dkackman/DeviceOAuth2/)
+1. [GitHub Project](https://github.com/dkackman/DeviceOAuth2/)
+1. [API Documentation](api/index.md)

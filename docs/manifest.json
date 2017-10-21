@@ -1,1 +1,199 @@
-{"homepages":[],"source_base_path":"C:/Users/Erffice/Documents/GitHub/DeviceOAuth2/docfx","xrefmap":"xrefmap.yml","files":[{"type":"ManagedReference","source_relative_path":"api/DeviceOAuth2.EndPointInfo.yml","output":{".html":{"relative_path":"api/DeviceOAuth2.EndPointInfo.html","hash":"Dt899mW+6GAeNTxDBuAADQ=="}},"is_incremental":false,"version":""},{"type":"ManagedReference","source_relative_path":"api/DeviceOAuth2.IDeviceOAuth2Stepwise.yml","output":{".html":{"relative_path":"api/DeviceOAuth2.IDeviceOAuth2Stepwise.html","hash":"HEhSn6gtnUozKslWWeuPBQ=="}},"is_incremental":false,"version":""},{"type":"ManagedReference","source_relative_path":"api/DeviceOAuth2.IDeviceOAuthInfo.yml","output":{".html":{"relative_path":"api/DeviceOAuth2.IDeviceOAuthInfo.html","hash":"3mTIuxl8hAlNCxyu2IMVeA=="}},"is_incremental":false,"version":""},{"type":"ManagedReference","source_relative_path":"api/DeviceOAuth2.yml","output":{".html":{"relative_path":"api/DeviceOAuth2.html","hash":"6ZkbGbV8QwptiLFb4h8rlw=="}},"is_incremental":false,"version":""},{"type":"Conceptual","source_relative_path":"index.md","output":{".html":{"relative_path":"index.html","hash":"eo19b6SFeoZkfsWZRFnwLg=="}},"is_incremental":false,"version":""},{"type":"ManagedReference","source_relative_path":"api/DeviceOAuth2.DeviceOAuth.yml","output":{".html":{"relative_path":"api/DeviceOAuth2.DeviceOAuth.html","hash":"XB1E2NYBKDd2AgdBbJzhxA=="}},"is_incremental":false,"version":""},{"type":"ManagedReference","source_relative_path":"api/DeviceOAuth2.AuthInfo.yml","output":{".html":{"relative_path":"api/DeviceOAuth2.AuthInfo.html","hash":"g89zZVSLZEUfc/0LZPXVIA=="}},"is_incremental":false,"version":""},{"type":"Toc","source_relative_path":"api/toc.yml","output":{".html":{"relative_path":"api/toc.html","hash":"BVSQUj/VVTOuChymxShcag=="}},"is_incremental":false,"version":""},{"type":"Toc","source_relative_path":"toc.yml","output":{".html":{"relative_path":"toc.html","hash":"Lh0kbVYcr050n2+P09YWMA=="}},"is_incremental":false,"version":""},{"type":"Conceptual","source_relative_path":"api/index.md","output":{".html":{"relative_path":"api/index.html","hash":"u3wttUmx0tyMVrs977OVEw=="}},"is_incremental":false,"version":""},{"type":"ManagedReference","source_relative_path":"api/DeviceOAuth2.TokenInfo.yml","output":{".html":{"relative_path":"api/DeviceOAuth2.TokenInfo.html","hash":"Xp/byZAu+2/AG17sdrVTfg=="}},"is_incremental":false,"version":""},{"type":"ManagedReference","source_relative_path":"api/DeviceOAuth2.IDeviceOAuth2.yml","output":{".html":{"relative_path":"api/DeviceOAuth2.IDeviceOAuth2.html","hash":"lN1pQPQqS0cGlRfgujOIhQ=="}},"is_incremental":false,"version":""}],"version_info":{}}
+{
+  "homepages": [],
+  "source_base_path": "C:/Users/Erffice/Documents/GitHub/DeviceOAuth2/docfx",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/DeviceOAuth2.AuthInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/DeviceOAuth2.AuthInfo.html",
+          "hash": "t6XET5Hn656ciLAB8Wz08w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/DeviceOAuth2.DeviceOAuth.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/DeviceOAuth2.DeviceOAuth.html",
+          "hash": "+ux0KwZSPqQabJvXNfTO+g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/DeviceOAuth2.EndPointInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/DeviceOAuth2.EndPointInfo.html",
+          "hash": "R5DF5ytQZFHnrEuEdvFOmA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/DeviceOAuth2.IDeviceOAuth2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/DeviceOAuth2.IDeviceOAuth2.html",
+          "hash": "azRHVweCGbTucEoA6UOhpg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/DeviceOAuth2.IDeviceOAuth2Stepwise.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/DeviceOAuth2.IDeviceOAuth2Stepwise.html",
+          "hash": "NIurs/YtLqeZcW/PKMZ8hw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/DeviceOAuth2.IDeviceOAuthInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/DeviceOAuth2.IDeviceOAuthInfo.html",
+          "hash": "ooXzu3TRZ4bpeLNnKN/MfQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/DeviceOAuth2.TokenInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/DeviceOAuth2.TokenInfo.html",
+          "hash": "lJHjhFJf4qqD6h8YEuvdWw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/DeviceOAuth2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/DeviceOAuth2.html",
+          "hash": "Y4FQnL/I8VWx8UYo2CrNkg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "EnpRFSTotdxxvIvl7kyH9Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "lflen0qeGG9wpCCG6VRxew=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "Z9W/16TmzokmDfah+RQgoA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "zUEcqxeC8MmPdFio0fKEQA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because docfx version changed from 2.24.0.0 to 2.25.2.0.",
+        "incrementalPhase": "build"
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build"
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build"
+        },
+        "RestApiDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor RestApiDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
+        "incrementalPhase": "postProcessing"
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
