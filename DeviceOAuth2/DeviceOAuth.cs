@@ -23,7 +23,7 @@ namespace DeviceOAuth2
         public event EventHandler<AuthInfo> PromptUser;
 
         /// <summary>
-        /// Status event raised each time confirmation is checked for
+        /// Status event raised each time confirmation is checked for. The int argument is number of seconds remaining before the auth flow times out.
         /// </summary>
         public event EventHandler<int> WaitingForConfirmation;
 
@@ -86,7 +86,7 @@ namespace DeviceOAuth2
         /// </summary>
         /// <param name="token">An existing auth token that can be checked for needing to be refreshed. Pass null if the app has never been authorized.</param>
         /// <returns>An auth token. If the token parameter is still valid it will be returned</returns>
-        /// <exception cref="UnauthorizedAccessException">Thrown when the user does not grant access</exception>
+        /// <exception cref="UnauthorizedAccessException">Thrown when the user denies access</exception>
         /// <exception cref="TimeoutException">Thrown when the user does not respond in the time alotted by the service</exception>
         /// <exception cref="DynamicRestClientResponseException">When there is an http failure</exception>
         public async Task<TokenInfo> Authorize(TokenInfo token)
@@ -101,7 +101,7 @@ namespace DeviceOAuth2
         /// <param name="token">An existing auth token that can be checked for needing to be refreshed. Pass null if the app has never been authorized.</param>
         /// <param name="cancelToken">Cancellation token</param>
         /// <returns>An auth token. If the token parameter is still valid it will be returned</returns>
-        /// <exception cref="UnauthorizedAccessException">Thrown when the user does not grant access</exception>
+        /// <exception cref="UnauthorizedAccessException">Thrown when the user denies access</exception>
         /// <exception cref="TimeoutException">Thrown when the user does not respond in the time alotted by the service</exception>
         /// <exception cref="DynamicRestClientResponseException">When there is an http failure</exception>
         public async Task<TokenInfo> Authorize(TokenInfo token, CancellationToken cancelToken)
@@ -111,7 +111,7 @@ namespace DeviceOAuth2
                 // if the stored token is expired refresh it
                 if (DateTime.UtcNow >= token.Expiry)
                 {
-                    if (!string.IsNullOrEmpty(token.RefreshToken))
+                    if (token.CanRefresh)
                     {
                         return await RefreshAccessToken(token, cancelToken);
                     }
@@ -205,7 +205,7 @@ namespace DeviceOAuth2
         private async Task<TokenInfo> RefreshAccessToken(TokenInfo token, CancellationToken cancelToken)
         {
             if (token == null) throw new ArgumentNullException("token");
-            if (string.IsNullOrEmpty(token.RefreshToken)) throw new InvalidOperationException("Token is not refreshable");
+            if (!token.CanRefresh) throw new InvalidOperationException("Token is not refreshable");
 
             using (dynamic tokenEndPoint = new DynamicRestClient(_endPoint.AuthUri))
             {
@@ -319,31 +319,58 @@ namespace DeviceOAuth2
             }
         }
 
-        async Task<AuthInfo> IDeviceOAuth2Stepwise.StartAuthorization()
-        {
-            return await GetDeviceCode(CancellationToken.None);
-        }
-        async Task<AuthInfo> IDeviceOAuth2Stepwise.StartAuthorization(CancellationToken cancelToken)
-        {
-            return await GetDeviceCode(cancelToken);
-        }
+        /// <summary>
+        /// Starts a new authorization flow
+        /// </summary>
+        /// <returns>Auth information to be displayed to the user</returns>
+        /// <exception cref="DynamicRestClientResponseException">When there is an http failure</exception>
+        async Task<AuthInfo> IDeviceOAuth2Stepwise.StartAuthorization() => await GetDeviceCode(CancellationToken.None);
+        /// <summary>
+        /// Starts a new authorization flow
+        /// </summary>
+        /// <param name="cancelToken"></param>
+        /// <returns>Auth information to be displayed to the user</returns>
+        /// <exception cref="DynamicRestClientResponseException">When there is an http failure</exception>
+        async Task<AuthInfo> IDeviceOAuth2Stepwise.StartAuthorization(CancellationToken cancelToken) => await GetDeviceCode(cancelToken);
 
-        async Task<TokenInfo> IDeviceOAuth2Stepwise.WaitForUserConsent(AuthInfo info)
-        {
-            return await PollForUserAuth(info, CancellationToken.None);
-        }
-        async Task<TokenInfo> IDeviceOAuth2Stepwise.WaitForUserConsent(AuthInfo info, CancellationToken cancelToken)
-        {
-            return await PollForUserAuth(info, cancelToken);
-        }
+        /// <summary>
+        /// Polls the service endpoint until the user gives authorization or the <see cref="AuthInfo.Expiration"/> passes
+        /// </summary>
+        /// <param name="info">The end point to authorize</param>
+        /// <returns>An auth token</returns>
+        /// <exception cref="UnauthorizedAccessException">Thrown when the user denies access</exception>
+        /// <exception cref="TimeoutException">Thrown when the user does not respond in the time alotted by the service</exception>
+        /// <exception cref="DynamicRestClientResponseException">When there is an http failure</exception>
+        async Task<TokenInfo> IDeviceOAuth2Stepwise.WaitForUserConsent(AuthInfo info) => await PollForUserAuth(info, CancellationToken.None);
+        /// <summary>
+        /// Polls the service endpoint until the user gives authorization or the <see cref="AuthInfo.Expiration"/> passes
+        /// </summary>
+        /// <param name="info">The end point to authorize</param>
+        /// <param name="cancelToken">A cancellation token</param>
+        /// <returns>An auth token</returns>
+        /// <exception cref="UnauthorizedAccessException">Thrown when the user denies access</exception>
+        /// <exception cref="TimeoutException">Thrown when the user does not respond in the time alotted by the service</exception>
+        /// <exception cref="DynamicRestClientResponseException">When there is an http failure</exception>
+        async Task<TokenInfo> IDeviceOAuth2Stepwise.WaitForUserConsent(AuthInfo info, CancellationToken cancelToken) => await PollForUserAuth(info, cancelToken);
 
-        async Task<TokenInfo> IDeviceOAuth2Stepwise.RefreshAccessToken(TokenInfo token)
-        {
-            return await RefreshAccessToken(token, CancellationToken.None);
-        }
-        async Task<TokenInfo> IDeviceOAuth2Stepwise.RefreshAccessToken(TokenInfo token, CancellationToken cancelToken)
-        {
-            return await RefreshAccessToken(token, cancelToken);
-        }
+        /// <summary>
+        /// Refreshes the access token
+        /// </summary>
+        /// <param name="token">The token to refresh</param>
+        /// <returns>A refreshed auth token</returns>
+        /// <exception cref="ArgumentNullException"><see cref="TokenInfo"/> is null</exception>
+        /// <exception cref="InvalidOperationException">The <see cref="TokenInfo"/> is not refreshable</exception>
+        /// <exception cref="DynamicRestClientResponseException">When there is an http failure</exception>
+        async Task<TokenInfo> IDeviceOAuth2Stepwise.RefreshAccessToken(TokenInfo token) => await RefreshAccessToken(token, CancellationToken.None);
+        /// <summary>
+        /// Refreshes the access token
+        /// </summary>
+        /// <param name="token">The token to refresh</param>
+        /// <param name="cancelToken">A cancellation token</param>
+        /// <returns>A refreshed auth token</returns>
+        /// <exception cref="ArgumentNullException"><see cref="TokenInfo"/> is null</exception>
+        /// <exception cref="InvalidOperationException">The <see cref="TokenInfo"/> is not refreshable</exception>
+        /// <exception cref="DynamicRestClientResponseException">When there is an http failure</exception>
+        async Task<TokenInfo> IDeviceOAuth2Stepwise.RefreshAccessToken(TokenInfo token, CancellationToken cancelToken) => await RefreshAccessToken(token, cancelToken);
     }
 }

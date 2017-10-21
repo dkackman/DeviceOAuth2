@@ -613,6 +613,18 @@ references:
   commentId: Overload:DeviceOAuth2.TokenInfo.AccessToken
   fullName: DeviceOAuth2.TokenInfo.AccessToken
   nameWithType: TokenInfo.AccessToken
+- uid: DeviceOAuth2.TokenInfo.CanRefresh
+  name: CanRefresh
+  href: api/DeviceOAuth2.TokenInfo.html#DeviceOAuth2_TokenInfo_CanRefresh
+  commentId: P:DeviceOAuth2.TokenInfo.CanRefresh
+  fullName: DeviceOAuth2.TokenInfo.CanRefresh
+  nameWithType: TokenInfo.CanRefresh
+- uid: DeviceOAuth2.TokenInfo.CanRefresh*
+  name: CanRefresh
+  href: api/DeviceOAuth2.TokenInfo.html#DeviceOAuth2_TokenInfo_CanRefresh_
+  commentId: Overload:DeviceOAuth2.TokenInfo.CanRefresh
+  fullName: DeviceOAuth2.TokenInfo.CanRefresh
+  nameWithType: TokenInfo.CanRefresh
 - uid: DeviceOAuth2.TokenInfo.Expiry
   name: Expiry
   href: api/DeviceOAuth2.TokenInfo.html#DeviceOAuth2_TokenInfo_Expiry

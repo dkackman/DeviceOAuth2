@@ -8,7 +8,7 @@ namespace DeviceOAuth2
     public sealed class TokenInfo
     {
         /// <summary>
-        /// The access token used by the app to access the endpoint's assocaited api and authorized scope.
+        /// The access token used by the app to access the endpoint's associated api and authorized scope.
         /// </summary>
         public string AccessToken { get; set; }
 
@@ -16,6 +16,11 @@ namespace DeviceOAuth2
         /// A token that can be used to refresh the access token. Null if endpoint doesn't support refresh.
         /// </summary>
         public string RefreshToken { get; set; }
+
+        /// <summary>
+        /// Indicator if this token is refreshable
+        /// </summary>
+        public bool CanRefresh => !string.IsNullOrEmpty(RefreshToken);
 
         /// <summary>
         /// The Expiration time of the access token. Will be DateTime.MaxValue if refresh is unknown or unsupported by the endpoint.

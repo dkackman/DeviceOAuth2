@@ -61,6 +61,7 @@
   "DeviceOAuth2.IDeviceOAuthInfo.WaitingForConfirmation": "DeviceOAuth2.IDeviceOAuthInfo.yml",
   "DeviceOAuth2.TokenInfo": "DeviceOAuth2.TokenInfo.yml",
   "DeviceOAuth2.TokenInfo.AccessToken": "DeviceOAuth2.TokenInfo.yml",
+  "DeviceOAuth2.TokenInfo.CanRefresh": "DeviceOAuth2.TokenInfo.yml",
   "DeviceOAuth2.TokenInfo.Expiry": "DeviceOAuth2.TokenInfo.yml",
   "DeviceOAuth2.TokenInfo.RefreshToken": "DeviceOAuth2.TokenInfo.yml",
   "DeviceOAuth2.TokenInfo.Scheme": "DeviceOAuth2.TokenInfo.yml",

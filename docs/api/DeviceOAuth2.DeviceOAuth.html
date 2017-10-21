@@ -412,7 +412,7 @@ if token is null or has no <a class="xref" href="DeviceOAuth2.TokenInfo.html#Dev
     <tbody>
       <tr>
         <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.unauthorizedaccessexception(v=vs.110).aspx">UnauthorizedAccessException</a></td>
-        <td><p>Thrown when the user does not grant access</p>
+        <td><p>Thrown when the user denies access</p>
 </td>
       </tr>
       <tr>
@@ -495,7 +495,7 @@ if token is null or has no <a class="xref" href="DeviceOAuth2.TokenInfo.html#Dev
     <tbody>
       <tr>
         <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.unauthorizedaccessexception(v=vs.110).aspx">UnauthorizedAccessException</a></td>
-        <td><p>Thrown when the user does not grant access</p>
+        <td><p>Thrown when the user denies access</p>
 </td>
       </tr>
       <tr>
@@ -799,7 +799,7 @@ Display these to the user and tell them to enter the code at the referenced web 
     <a href="https://github.com/dkackman/DeviceOAuth2/blob/master/DeviceOAuth2/DeviceOAuth.cs/#L28">View Source</a>
   </span>
   <h4 id="DeviceOAuth2_DeviceOAuth_WaitingForConfirmation" data-uid="DeviceOAuth2.DeviceOAuth.WaitingForConfirmation">WaitingForConfirmation</h4>
-  <div class="markdown level1 summary"><p>Status event raised each time confirmation is checked for</p>
+  <div class="markdown level1 summary"><p>Status event raised each time confirmation is checked for. The int argument is number of seconds remaining before the auth flow times out.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -828,11 +828,12 @@ Display these to the user and tell them to enter the code at the referenced web 
     <a href="https://github.com/dkackman/DeviceOAuth2/new/master/apiSpec/new?filename=DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_RefreshAccessToken_DeviceOAuth2_TokenInfo_.md&amp;value=---%0Auid%3A%20DeviceOAuth2.DeviceOAuth.DeviceOAuth2%23IDeviceOAuth2Stepwise%23RefreshAccessToken(DeviceOAuth2.TokenInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/dkackman/DeviceOAuth2/blob/master/DeviceOAuth2/DeviceOAuth.cs/#L340">View Source</a>
+    <a href="https://github.com/dkackman/DeviceOAuth2/blob/master/DeviceOAuth2/DeviceOAuth.cs/#L364">View Source</a>
   </span>
   <a id="DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_RefreshAccessToken_" data-uid="DeviceOAuth2.DeviceOAuth.DeviceOAuth2#IDeviceOAuth2Stepwise#RefreshAccessToken*"></a>
   <h4 id="DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_RefreshAccessToken_DeviceOAuth2_TokenInfo_" data-uid="DeviceOAuth2.DeviceOAuth.DeviceOAuth2#IDeviceOAuth2Stepwise#RefreshAccessToken(DeviceOAuth2.TokenInfo)">IDeviceOAuth2Stepwise.RefreshAccessToken(TokenInfo)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Refreshes the access token</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -851,7 +852,8 @@ Display these to the user and tell them to enter the code at the referenced web 
       <tr>
         <td><a class="xref" href="DeviceOAuth2.TokenInfo.html">TokenInfo</a></td>
         <td><span class="parametername">token</span></td>
-        <td></td>
+        <td><p>The token to refresh</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -866,7 +868,34 @@ Display these to the user and tell them to enter the code at the referenced web 
     <tbody>
       <tr>
         <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="DeviceOAuth2.TokenInfo.html">TokenInfo</a>&gt;</td>
-        <td></td>
+        <td><p>A refreshed auth token</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
+        <td><p><a class="xref" href="DeviceOAuth2.TokenInfo.html">TokenInfo</a> is null</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a></td>
+        <td><p>The <a class="xref" href="DeviceOAuth2.TokenInfo.html">TokenInfo</a> is not refreshable</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DynamicRestProxy.PortableHttpClient.DynamicRestClientResponseException</span></td>
+        <td><p>When there is an http failure</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -875,11 +904,12 @@ Display these to the user and tell them to enter the code at the referenced web 
     <a href="https://github.com/dkackman/DeviceOAuth2/new/master/apiSpec/new?filename=DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_RefreshAccessToken_DeviceOAuth2_TokenInfo_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20DeviceOAuth2.DeviceOAuth.DeviceOAuth2%23IDeviceOAuth2Stepwise%23RefreshAccessToken(DeviceOAuth2.TokenInfo%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/dkackman/DeviceOAuth2/blob/master/DeviceOAuth2/DeviceOAuth.cs/#L344">View Source</a>
+    <a href="https://github.com/dkackman/DeviceOAuth2/blob/master/DeviceOAuth2/DeviceOAuth.cs/#L374">View Source</a>
   </span>
   <a id="DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_RefreshAccessToken_" data-uid="DeviceOAuth2.DeviceOAuth.DeviceOAuth2#IDeviceOAuth2Stepwise#RefreshAccessToken*"></a>
   <h4 id="DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_RefreshAccessToken_DeviceOAuth2_TokenInfo_System_Threading_CancellationToken_" data-uid="DeviceOAuth2.DeviceOAuth.DeviceOAuth2#IDeviceOAuth2Stepwise#RefreshAccessToken(DeviceOAuth2.TokenInfo,System.Threading.CancellationToken)">IDeviceOAuth2Stepwise.RefreshAccessToken(TokenInfo, CancellationToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Refreshes the access token</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -898,12 +928,14 @@ Display these to the user and tell them to enter the code at the referenced web 
       <tr>
         <td><a class="xref" href="DeviceOAuth2.TokenInfo.html">TokenInfo</a></td>
         <td><span class="parametername">token</span></td>
-        <td></td>
+        <td><p>The token to refresh</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
         <td><span class="parametername">cancelToken</span></td>
-        <td></td>
+        <td><p>A cancellation token</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -918,7 +950,34 @@ Display these to the user and tell them to enter the code at the referenced web 
     <tbody>
       <tr>
         <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="DeviceOAuth2.TokenInfo.html">TokenInfo</a>&gt;</td>
-        <td></td>
+        <td><p>A refreshed auth token</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
+        <td><p><a class="xref" href="DeviceOAuth2.TokenInfo.html">TokenInfo</a> is null</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a></td>
+        <td><p>The <a class="xref" href="DeviceOAuth2.TokenInfo.html">TokenInfo</a> is not refreshable</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DynamicRestProxy.PortableHttpClient.DynamicRestClientResponseException</span></td>
+        <td><p>When there is an http failure</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -927,11 +986,12 @@ Display these to the user and tell them to enter the code at the referenced web 
     <a href="https://github.com/dkackman/DeviceOAuth2/new/master/apiSpec/new?filename=DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_StartAuthorization.md&amp;value=---%0Auid%3A%20DeviceOAuth2.DeviceOAuth.DeviceOAuth2%23IDeviceOAuth2Stepwise%23StartAuthorization%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/dkackman/DeviceOAuth2/blob/master/DeviceOAuth2/DeviceOAuth.cs/#L322">View Source</a>
+    <a href="https://github.com/dkackman/DeviceOAuth2/blob/master/DeviceOAuth2/DeviceOAuth.cs/#L327">View Source</a>
   </span>
   <a id="DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_StartAuthorization_" data-uid="DeviceOAuth2.DeviceOAuth.DeviceOAuth2#IDeviceOAuth2Stepwise#StartAuthorization*"></a>
   <h4 id="DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_StartAuthorization" data-uid="DeviceOAuth2.DeviceOAuth.DeviceOAuth2#IDeviceOAuth2Stepwise#StartAuthorization">IDeviceOAuth2Stepwise.StartAuthorization()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Starts a new authorization flow</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -948,7 +1008,24 @@ Display these to the user and tell them to enter the code at the referenced web 
     <tbody>
       <tr>
         <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="DeviceOAuth2.AuthInfo.html">AuthInfo</a>&gt;</td>
-        <td></td>
+        <td><p>Auth information to be displayed to the user</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">DynamicRestProxy.PortableHttpClient.DynamicRestClientResponseException</span></td>
+        <td><p>When there is an http failure</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -957,11 +1034,12 @@ Display these to the user and tell them to enter the code at the referenced web 
     <a href="https://github.com/dkackman/DeviceOAuth2/new/master/apiSpec/new?filename=DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_StartAuthorization_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20DeviceOAuth2.DeviceOAuth.DeviceOAuth2%23IDeviceOAuth2Stepwise%23StartAuthorization(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/dkackman/DeviceOAuth2/blob/master/DeviceOAuth2/DeviceOAuth.cs/#L326">View Source</a>
+    <a href="https://github.com/dkackman/DeviceOAuth2/blob/master/DeviceOAuth2/DeviceOAuth.cs/#L334">View Source</a>
   </span>
   <a id="DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_StartAuthorization_" data-uid="DeviceOAuth2.DeviceOAuth.DeviceOAuth2#IDeviceOAuth2Stepwise#StartAuthorization*"></a>
   <h4 id="DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_StartAuthorization_System_Threading_CancellationToken_" data-uid="DeviceOAuth2.DeviceOAuth.DeviceOAuth2#IDeviceOAuth2Stepwise#StartAuthorization(System.Threading.CancellationToken)">IDeviceOAuth2Stepwise.StartAuthorization(CancellationToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Starts a new authorization flow</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -995,7 +1073,24 @@ Display these to the user and tell them to enter the code at the referenced web 
     <tbody>
       <tr>
         <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="DeviceOAuth2.AuthInfo.html">AuthInfo</a>&gt;</td>
-        <td></td>
+        <td><p>Auth information to be displayed to the user</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">DynamicRestProxy.PortableHttpClient.DynamicRestClientResponseException</span></td>
+        <td><p>When there is an http failure</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1004,11 +1099,12 @@ Display these to the user and tell them to enter the code at the referenced web 
     <a href="https://github.com/dkackman/DeviceOAuth2/new/master/apiSpec/new?filename=DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_WaitForUserConsent_DeviceOAuth2_AuthInfo_.md&amp;value=---%0Auid%3A%20DeviceOAuth2.DeviceOAuth.DeviceOAuth2%23IDeviceOAuth2Stepwise%23WaitForUserConsent(DeviceOAuth2.AuthInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/dkackman/DeviceOAuth2/blob/master/DeviceOAuth2/DeviceOAuth.cs/#L331">View Source</a>
+    <a href="https://github.com/dkackman/DeviceOAuth2/blob/master/DeviceOAuth2/DeviceOAuth.cs/#L344">View Source</a>
   </span>
   <a id="DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_WaitForUserConsent_" data-uid="DeviceOAuth2.DeviceOAuth.DeviceOAuth2#IDeviceOAuth2Stepwise#WaitForUserConsent*"></a>
   <h4 id="DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_WaitForUserConsent_DeviceOAuth2_AuthInfo_" data-uid="DeviceOAuth2.DeviceOAuth.DeviceOAuth2#IDeviceOAuth2Stepwise#WaitForUserConsent(DeviceOAuth2.AuthInfo)">IDeviceOAuth2Stepwise.WaitForUserConsent(AuthInfo)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Polls the service endpoint until the user gives authorization or the <a class="xref" href="DeviceOAuth2.AuthInfo.html#DeviceOAuth2_AuthInfo_Expiration">Expiration</a> passes</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1027,7 +1123,8 @@ Display these to the user and tell them to enter the code at the referenced web 
       <tr>
         <td><a class="xref" href="DeviceOAuth2.AuthInfo.html">AuthInfo</a></td>
         <td><span class="parametername">info</span></td>
-        <td></td>
+        <td><p>The end point to authorize</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1042,7 +1139,34 @@ Display these to the user and tell them to enter the code at the referenced web 
     <tbody>
       <tr>
         <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="DeviceOAuth2.TokenInfo.html">TokenInfo</a>&gt;</td>
-        <td></td>
+        <td><p>An auth token</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.unauthorizedaccessexception(v=vs.110).aspx">UnauthorizedAccessException</a></td>
+        <td><p>Thrown when the user denies access</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.timeoutexception(v=vs.110).aspx">TimeoutException</a></td>
+        <td><p>Thrown when the user does not respond in the time alotted by the service</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DynamicRestProxy.PortableHttpClient.DynamicRestClientResponseException</span></td>
+        <td><p>When there is an http failure</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1051,11 +1175,12 @@ Display these to the user and tell them to enter the code at the referenced web 
     <a href="https://github.com/dkackman/DeviceOAuth2/new/master/apiSpec/new?filename=DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_WaitForUserConsent_DeviceOAuth2_AuthInfo_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20DeviceOAuth2.DeviceOAuth.DeviceOAuth2%23IDeviceOAuth2Stepwise%23WaitForUserConsent(DeviceOAuth2.AuthInfo%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/dkackman/DeviceOAuth2/blob/master/DeviceOAuth2/DeviceOAuth.cs/#L335">View Source</a>
+    <a href="https://github.com/dkackman/DeviceOAuth2/blob/master/DeviceOAuth2/DeviceOAuth.cs/#L354">View Source</a>
   </span>
   <a id="DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_WaitForUserConsent_" data-uid="DeviceOAuth2.DeviceOAuth.DeviceOAuth2#IDeviceOAuth2Stepwise#WaitForUserConsent*"></a>
   <h4 id="DeviceOAuth2_DeviceOAuth_DeviceOAuth2_IDeviceOAuth2Stepwise_WaitForUserConsent_DeviceOAuth2_AuthInfo_System_Threading_CancellationToken_" data-uid="DeviceOAuth2.DeviceOAuth.DeviceOAuth2#IDeviceOAuth2Stepwise#WaitForUserConsent(DeviceOAuth2.AuthInfo,System.Threading.CancellationToken)">IDeviceOAuth2Stepwise.WaitForUserConsent(AuthInfo, CancellationToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Polls the service endpoint until the user gives authorization or the <a class="xref" href="DeviceOAuth2.AuthInfo.html#DeviceOAuth2_AuthInfo_Expiration">Expiration</a> passes</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1074,12 +1199,14 @@ Display these to the user and tell them to enter the code at the referenced web 
       <tr>
         <td><a class="xref" href="DeviceOAuth2.AuthInfo.html">AuthInfo</a></td>
         <td><span class="parametername">info</span></td>
-        <td></td>
+        <td><p>The end point to authorize</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
         <td><span class="parametername">cancelToken</span></td>
-        <td></td>
+        <td><p>A cancellation token</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1094,7 +1221,34 @@ Display these to the user and tell them to enter the code at the referenced web 
     <tbody>
       <tr>
         <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="DeviceOAuth2.TokenInfo.html">TokenInfo</a>&gt;</td>
-        <td></td>
+        <td><p>An auth token</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.unauthorizedaccessexception(v=vs.110).aspx">UnauthorizedAccessException</a></td>
+        <td><p>Thrown when the user denies access</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.timeoutexception(v=vs.110).aspx">TimeoutException</a></td>
+        <td><p>Thrown when the user does not respond in the time alotted by the service</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DynamicRestProxy.PortableHttpClient.DynamicRestClientResponseException</span></td>
+        <td><p>When there is an http failure</p>
+</td>
       </tr>
     </tbody>
   </table>
